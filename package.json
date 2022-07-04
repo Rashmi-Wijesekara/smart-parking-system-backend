@@ -1,0 +1,23 @@
+{
+  "name": "smart-parking-system-backend",
+  "version": "1.0.0",
+  "description": "smart parking system backend",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rashmi-Wijesekara/smart-parking-system-backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Rashmi-Wijesekara/smart-parking-system-backend/issues"
+  },
+  "homepage": "https://github.com/Rashmi-Wijesekara/smart-parking-system-backend#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
