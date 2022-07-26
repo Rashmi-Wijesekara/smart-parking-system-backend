@@ -1,4 +1,5 @@
 const Employee = require('../database/Employee')
+const { v4: uuid } = require("uuid")
 
 const getAllEmployees = () => {
 	const allEmployees = Employee.getAllEmployees()
@@ -13,15 +14,17 @@ const getEmployeeById = (employeeId) => {
 const addNewEmployee = (newEmployee) => {
 	const employeeToInsert = {
 		...newEmployee,
-		id: "111"
+		id: uuid()
 	}
 
 	const addedEmployee = Employee.addNewEmployee(employeeToInsert)
 	return addedEmployee
 }
 
-const updateEmployee = () => {
-	return;
+// change password
+const updateEmployee = (employeeId, newPassword) => {
+	const updatedEmployee = Employee.updateEmployee(employeeId, newPassword)
+	return updatedEmployee;
 }
 
 // updateVehicleList

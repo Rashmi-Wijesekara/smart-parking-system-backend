@@ -16,13 +16,33 @@ const addNewEmployee = (newEmployee) => {
 
 	if(isAlreadyAdded)
 		return
+
 	database.employees.push(newEmployee);
 	saveToDatabase(database)
 	return newEmployee
+}
+
+const updateEmployee = (employeeId, newPassword) => {
+	const isAvailable = database.employees.findIndex(
+		(employee) => employee.id === employeeId
+	) > -1;
+
+	// invalid employeeId
+	if(!isAvailable)
+		return
+
+	const updatingEmployeeIndex = database.employees.findIndex(employee => employee.id === employeeId)
+
+	delete database.employees[updatingEmployeeIndex].password
+	database.employees[updatingEmployeeIndex].password = newPassword
+
+	saveToDatabase(database)
+	return database.employees[updatingEmployeeIndex]
 }
 
 module.exports = {
 	getAllEmployees,
 	getEmployeeById,
 	addNewEmployee,
+	updateEmployee,
 };

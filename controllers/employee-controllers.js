@@ -37,16 +37,36 @@ const addNewEmployee = (req, res) => {
 		name: body.name,
 		phoneNo: body.phoneNo,
 		email: body.email,
-		vehicleList : body.vehicleList
+		vehicleList : body.vehicleList,
+		password : body.password
 	}
 
 	const addedEmployee = service__employee.addNewEmployee(employee)
 	res.status(201).send({status: 'OK', data: addedEmployee});
 };
 
+// change password
 const updateEmployee = (req, res) => {
-	const updatedEmployee = service__employee.updateEmployee()
-	res.send("update employee " + req.params.emid);
+	const errors = validationResult(req);
+	if (!errors.isEmpty())
+		throw new HttpError(
+			"Invalid inputs passed, please check your data",
+			422
+		);
+	
+	const newPassword = req.body.password
+	const employeeId = req.params.emid
+	const updatedEmployee = service__employee.updateEmployee(employeeId, newPassword)
+
+	if (!updatedEmployee)
+		throw new HttpError(
+			`could not find employee for id-${employeeId}`,
+			404
+		);
+
+	res
+		.status(201)
+		.send({ status: "OK", data: updatedEmployee });
 };
 
 const updateVehicleList = (req, res) => {

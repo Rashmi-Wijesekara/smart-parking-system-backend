@@ -8,7 +8,8 @@
       "vehicleList": [
         "CDB 4306",
         "ADS 2113"
-      ]
+      ],
+      "password": "1234"
     },
     {
       "id": "000294387",
@@ -17,7 +18,8 @@
       "email": "madhawah@mm.lk",
       "vehicleList": [
         "CDB 1000"
-      ]
+      ],
+      "password": "1234"
     },
     {
       "id": "000554342",
@@ -27,7 +29,8 @@
       "vehicleList": [
         "WWW 1212",
         "GGG 2332"
-      ]
+      ],
+      "password": "1234"
     },
     {
       "name": "Sampath Herath",
@@ -36,7 +39,8 @@
       "vehicleList": [
         "SD 4455"
       ],
-      "id": "111"
+      "id": "3dd3b9fd-da73-4d9c-94e0-21266face3c6",
+      "password": "zzzz"
     }
   ]
 }

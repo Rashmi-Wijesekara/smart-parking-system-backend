@@ -16,11 +16,12 @@ router.post("/", [
 	check('name').not().isEmpty(),
 	check('phoneNo').not().isEmpty(),
 	check('email').not().isEmpty(),
+	check('password').not().isEmpty(),
 	check('vehicleList').isLength({min: 1})
 ], controllers__employee.addNewEmployee)
 
 // PATCH api/employee/:emid
-router.patch("/:emid", controllers__employee.updateEmployee)
+router.patch("/:emid", [check('password').not().isEmpty()], controllers__employee.updateEmployee)
 
 // PATCH api/employee/vehicles/:type/:emid
 router.patch("/vehicles/:type/:emid", controllers__employee.updateVehicleList)
