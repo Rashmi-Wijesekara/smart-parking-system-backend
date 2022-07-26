@@ -18,7 +18,7 @@ const getEmployeeById = (req, res, next) => {
 
 	if(!employee)
 		throw new HttpError(
-			`could not find employee for id-${employeeId}`,
+			`could not find employee ID ${employeeId}`,
 			404
 		);
 	res.json({
@@ -60,7 +60,7 @@ const updateEmployee = (req, res) => {
 
 	if (!updatedEmployee)
 		throw new HttpError(
-			`could not find employee for id-${employeeId}`,
+			`could not find employee ID ${employeeId}`,
 			404
 		);
 
@@ -71,17 +71,44 @@ const updateEmployee = (req, res) => {
 
 const updateVehicleList = (req, res) => {
 	const type = req.params.type
-	let updatedVehicleList
+	const emid = req.params.emid
+	let updatedEmployee = null
 
-	if(type === "add"){
-		updatedVehicleList = service__employee.addVehicle()
-	}else if(type === "remove"){
-		updatedVehicleList = service__employee.removeVehicle()
+	const updatingVehicleId = req.body.vehicleId
+	if(!updatingVehicleId){
+		throw new HttpError(
+			`vehicle ID is required`,
+			422
+		);
 	}
 
-	res.send(
-		`${req.params.type} new vehicle to ${req.params.emid}`
-	);
+	if(type === "add"){
+		updatedEmployee = service__employee.addVehicle(
+			emid,
+			updatingVehicleId
+		);
+	}else if(type === "remove"){
+		updatedEmployee = service__employee.removeVehicle(
+			emid,
+			updatingVehicleId
+		);
+	}
+
+	if(updatedEmployee === "emid available"){
+		throw new HttpError(
+			`could not find employee ID ${emid}`,
+			404
+		);
+	}else if(updatedEmployee === "veid available"){
+		throw new HttpError(
+			`vehicle ID ${updatingVehicleId} already available`,
+			422
+		);
+	}
+
+	res
+		.status(201)
+		.send({ status: "OK", data: updatedEmployee });
 };
 
 const getVehicleList = (req, res) => {

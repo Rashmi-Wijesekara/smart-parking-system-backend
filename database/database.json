@@ -36,11 +36,15 @@
       "name": "Sampath Herath",
       "phoneNo": "0778445432",
       "email": "sampathh@mm.lk",
-      "vehicleList": [
-        "SD 4455"
-      ],
       "id": "3dd3b9fd-da73-4d9c-94e0-21266face3c6",
-      "password": "zzzz"
+      "password": "zzzz",
+      "vehicleList": [
+        "SD 4455",
+        "ACC 1222",
+        "ACC 1227",
+        "SD 4456",
+        "SD 4450"
+      ]
     }
   ]
 }

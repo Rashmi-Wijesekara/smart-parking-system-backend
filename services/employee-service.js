@@ -14,7 +14,7 @@ const getEmployeeById = (employeeId) => {
 const addNewEmployee = (newEmployee) => {
 	const employeeToInsert = {
 		...newEmployee,
-		id: uuid()
+		id: uuid() //generate unique id
 	}
 
 	const addedEmployee = Employee.addNewEmployee(employeeToInsert)
@@ -28,11 +28,21 @@ const updateEmployee = (employeeId, newPassword) => {
 }
 
 // updateVehicleList
-const addVehicle = () => {
-	return;
-}
+// (employeeId, updatingVehicleId)
+const addVehicle = (emid, veid) => {
+	const updatedEmployee = Employee.addVehicle(
+		emid,
+		veid,
+		Employee.isAvailable,
+		Employee.employeeIndex,
+		Employee.isVehicleAvailable,
+		Employee.findIndex__vehicle
+	);
+	return updatedEmployee
+};
 
-const removeVehicle = () => {
+const removeVehicle = (emid, veid) => {
+	const updatedEmployee = Employee.removeVehicle(emid, veid)
 	return;
 }
 
