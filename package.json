@@ -19,7 +19,8 @@
   "homepage": "https://github.com/Rashmi-Wijesekara/smart-parking-system-backend#readme",
   "dependencies": {
     "body-parser": "^1.20.0",
-    "express": "^4.18.1"
+    "express": "^4.18.1",
+    "express-validator": "^6.14.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.19"
