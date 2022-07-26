@@ -1,3 +1,5 @@
+const {validationResult} = require('express-validator')
+
 const HttpError = require("../models/http-error");
 const service__employee = require("../services/employee-service")
 
@@ -26,8 +28,20 @@ const getEmployeeById = (req, res, next) => {
 };
 
 const addNewEmployee = (req, res) => {
-	const addedEmployee = service__employee.addNewEmployee()
-	res.send("adding new employee");
+	const {body} = req
+	const errors = validationResult(req)
+	if(!errors.isEmpty())
+		throw new HttpError('Invalid inputs passed, please check your data', 422)
+	
+	const employee = {
+		name: body.name,
+		phoneNo: body.phoneNo,
+		email: body.email,
+		vehicleList : body.vehicleList
+	}
+
+	const addedEmployee = service__employee.addNewEmployee(employee)
+	res.status(201).send({status: 'OK', data: addedEmployee});
 };
 
 const updateEmployee = (req, res) => {

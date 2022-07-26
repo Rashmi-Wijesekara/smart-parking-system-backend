@@ -10,8 +10,14 @@ const getEmployeeById = (employeeId) => {
 	return employee
 }
 
-const addNewEmployee = () => {
-	return;
+const addNewEmployee = (newEmployee) => {
+	const employeeToInsert = {
+		...newEmployee,
+		id: "111"
+	}
+
+	const addedEmployee = Employee.addNewEmployee(employeeToInsert)
+	return addedEmployee
 }
 
 const updateEmployee = () => {

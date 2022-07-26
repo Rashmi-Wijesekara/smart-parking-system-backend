@@ -1,32 +1,42 @@
 {
-	"employees": [
-		{
-			"id": "000294392",
-			"name": "M.R. Perera",
-			"phoneNo": "0778435221",
-			"vehicleList": [
-				"CDB 4306",
-				"ADS 2113"
-			]
-		},
-		{
-			"id": "000294387",
-			"name": "Madhawa Herath",
-			"phoneNo": "0770032321",
-			"vehicleList": [
-				"CDB 1000",
-				"AAA 9999"
-			]
-		},
-		{
-			"id": "000554342",
-			"name": "Roshan Santhush",
-			"phoneNo": "0778443220",
-			"vehicleList": [
-				"WWW 1212",
-				"GGG 2332"
-			]
-		}
-	
-	]
+  "employees": [
+    {
+      "id": "000294392",
+      "name": "Mohan Perera",
+      "phoneNo": "0778435221",
+      "email": "mohanp@mm.lk",
+      "vehicleList": [
+        "CDB 4306",
+        "ADS 2113"
+      ]
+    },
+    {
+      "id": "000294387",
+      "name": "Madhawa Herath",
+      "phoneNo": "0770032321",
+      "email": "madhawah@mm.lk",
+      "vehicleList": [
+        "CDB 1000"
+      ]
+    },
+    {
+      "id": "000554342",
+      "name": "Roshan Santhush",
+      "phoneNo": "0778443220",
+      "email": "roshans@mm.lk",
+      "vehicleList": [
+        "WWW 1212",
+        "GGG 2332"
+      ]
+    },
+    {
+      "name": "Sampath Herath",
+      "phoneNo": "0778445432",
+      "email": "sampathh@mm.lk",
+      "vehicleList": [
+        "SD 4455"
+      ],
+      "id": "111"
+    }
+  ]
 }
