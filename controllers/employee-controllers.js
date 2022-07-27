@@ -42,6 +42,13 @@ const addNewEmployee = (req, res) => {
 	}
 
 	const addedEmployee = service__employee.addNewEmployee(employee)
+
+	if(addedEmployee === "veid available"){
+		throw new HttpError(
+			`vehicle ID already available`,
+			422
+		);
+	}
 	res.status(201).send({status: 'OK', data: addedEmployee});
 };
 
@@ -69,6 +76,7 @@ const updateEmployee = (req, res) => {
 		.send({ status: "OK", data: updatedEmployee });
 };
 
+// add or remove a vehicle from the vehicle list of an employee
 const updateVehicleList = (req, res) => {
 	const type = req.params.type
 	const emid = req.params.emid
@@ -103,6 +111,11 @@ const updateVehicleList = (req, res) => {
 		throw new HttpError(
 			`vehicle ID ${updatingVehicleId} already available`,
 			422
+		);
+	}else if(updatedEmployee === "veid unavailable"){
+		throw new HttpError(
+			`could not find vehicle ID ${updatingVehicleId} in the given employee's vehicle list`,
+			404
 		);
 	}
 
