@@ -101,11 +101,11 @@
 
   "parkingLog": [
     {
-      "id": "000294392",
-      "name": "Mohan Perera",
+      "employeeId": "000294392",
       "vehicleId": "CDB 4306",
       "status": "IN",
-      "date": ""
+      "date": "2022-06-12",
+      "time": "06:54 pm"
     }
   ]
 }

@@ -19,3 +19,9 @@ const getLogsWithinGivenTime = (req, res) => {
 const addLog = (req, res) => {
 	return;
 };
+
+module.exports = {
+	getAllLogs,
+	getLogsWithinGivenTime,
+	addLog
+}

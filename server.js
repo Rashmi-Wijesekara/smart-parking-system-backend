@@ -13,7 +13,7 @@ server.use(bodyParser.json());
 
 // connect routers
 server.use("/api/employee", router__employee)
-server.use("api/parking-log", router__parkingLog)
+server.use("/api/parking-log", router__parkingLog)
 
 // check server configuration
 server.use("/", (req, res) => {

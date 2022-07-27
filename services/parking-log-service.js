@@ -14,3 +14,9 @@ const addLog = (emid, name, veid, status, date, time) => {
 	const addedLog = Employee.addLog(emid, name, veid, status, date, time)
 	return addedLog
 }
+
+module.exports = {
+	getAllLogs,
+	getLogsWithinGivenTime,
+	addLog
+}

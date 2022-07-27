@@ -2,8 +2,7 @@ const database = require('./database.json')
 const {saveToDatabase} = require('./utils')
 
 const getAllLogs = () => {
-	
-	return
+	return database.parkingLog
 }
 
 const getLogsWithinGivenTime = () => {
@@ -12,4 +11,10 @@ const getLogsWithinGivenTime = () => {
 
 const addLog = () => {
 	return
+}
+
+module.exports = {
+	getAllLogs,
+	getLogsWithinGivenTime,
+	addLog
 }
