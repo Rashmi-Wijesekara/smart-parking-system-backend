@@ -97,5 +97,15 @@
       "password": "1212",
       "id": "6b431899-6453-46fb-9b64-2aa785ce5b8c"
     }
+  ],
+
+  "parkingLog": [
+    {
+      "id": "000294392",
+      "name": "Mohan Perera",
+      "vehicleId": "CDB 4306",
+      "status": "IN",
+      "date": ""
+    }
   ]
 }
