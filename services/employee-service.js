@@ -61,8 +61,13 @@ const removeVehicle = (emid, veid) => {
 	return updatedEmployee;
 };
 
-const getVehicleList = () => {
-	return;
+const getVehicleList = (emid) => {
+	const vehicleList = Employee.getVehicleList(
+		emid,
+		Employee.isEmployeeAvailable,
+		Employee.findIndex__employee
+	);
+	return vehicleList;
 };
 
 module.exports = {

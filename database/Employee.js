@@ -203,6 +203,25 @@ const removeVehicle = (
 	return database.employees[employeeIndex];
 };
 
+// return the vehicle list of given employee
+const getVehicleList =(
+	emid,
+	isEmployeeAvailable,
+	findIndex__employee
+) => {
+	const isEmployeeAvailableResult =
+		isEmployeeAvailable(emid);
+
+	// invalid employee id
+	if (isEmployeeAvailableResult === false) {
+		return "emid available";
+	}
+
+	const employeeIndex = findIndex__employee(emid);
+
+	return database.employees[employeeIndex].vehicleList
+}
+
 module.exports = {
 	isEmployeeAvailable,
 	findIndex__employee,
@@ -214,4 +233,5 @@ module.exports = {
 	updateEmployee,
 	addVehicle,
 	removeVehicle,
+	getVehicleList
 };
