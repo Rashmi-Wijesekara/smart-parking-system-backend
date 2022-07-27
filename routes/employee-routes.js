@@ -6,21 +6,39 @@ const controllers__employee = require('../controllers/employee-controllers')
 const router = express.Router();
 
 // GET api/employee/
+// get full list of all the employees
 router.get("/", controllers__employee.getAllEmployees)
 
 // GET api/employee/:emid
+// get employee data
 router.get("/:emid", controllers__employee.getEmployeeById)
 
 // POST api/employee/
-router.post("/", controllers__employee.addNewEmployee)
+// add new employee
+router.post("/", [
+	check('name').not().isEmpty(),
+	check('phoneNo').not().isEmpty(),
+	check('email').not().isEmpty(),
+	check('password').not().isEmpty(),
+	check('vehicleList').isLength({min: 1})
+], controllers__employee.addNewEmployee)
 
 // PATCH api/employee/:emid
-router.patch("/:emid", controllers__employee.updateEmployee)
+// change the password
+router.patch("/:emid", [check('password').not().isEmpty()], controllers__employee.updateEmployee)
 
-// PATCH api/employee/vehicles/:type/:emid
-router.patch("/vehicles/:type/:emid", controllers__employee.updateVehicleList)
+// PATCH api/employee/:emid/vehicles/:type
+// add or remove a vehicle from the employee's vehicle list
+router.patch(
+	"/:emid/vehicles/:type",
+	controllers__employee.updateVehicleList
+);
 
-// GET api/employee/vehicles/:emid
-router.get("/vehicles/:emid", controllers__employee.getVehicleList)
+// GET api/employee/:emid/vehicles
+// get the full vehicle list
+router.get(
+	"/:emid/vehicles",
+	controllers__employee.getVehicleList
+);
 
 module.exports = router

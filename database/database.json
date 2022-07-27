@@ -1,0 +1,101 @@
+{
+  "employees": [
+    {
+      "id": "000294392",
+      "name": "Mohan Perera",
+      "phoneNo": "0778435221",
+      "email": "mohanp@mm.lk",
+      "password": "1234",
+      "vehicleList": [
+        "CDB 4306",
+        "ADS 2113",
+        "SDD 4400"
+      ]
+    },
+    {
+      "id": "000294387",
+      "name": "Madhawa Herath",
+      "phoneNo": "0770032321",
+      "email": "madhawah@mm.lk",
+      "vehicleList": [
+        "CDB 1000"
+      ],
+      "password": "1234"
+    },
+    {
+      "id": "000554342",
+      "name": "Roshan Santhush",
+      "phoneNo": "0778443220",
+      "email": "roshans@mm.lk",
+      "vehicleList": [
+        "WWW 1212",
+        "GGG 2332"
+      ],
+      "password": "1234"
+    },
+    {
+      "name": "Sampath Herath",
+      "phoneNo": "0778445432",
+      "email": "sampathh@mm.lk",
+      "id": "3dd3b9fd-da73-4d9c-94e0-21266face3c6",
+      "vehicleList": [
+        "SD 4455",
+        "ACC 1222",
+        "ACC 1227",
+        "SD 4456",
+        "SD 4450"
+      ],
+      "password": "1111"
+    },
+    {
+      "name": "Sampath Kularathne",
+      "phoneNo": "0778445432",
+      "email": "sampathk@mm.lk",
+      "vehicleList": [
+        "SD 4330"
+      ],
+      "password": "1111",
+      "id": "ff04f9fa-2cb7-41fc-a1d7-bc5eee5d2475"
+    },
+    {
+      "name": "Sahan Kularathne",
+      "phoneNo": "0778223132",
+      "email": "sahank@mm.lk",
+      "vehicleList": [
+        "SD 4992"
+      ],
+      "password": "1111",
+      "id": "ca79f302-cdac-41eb-a5ed-9c41400a5037"
+    },
+    {
+      "name": "Sahan Kulathunga",
+      "phoneNo": "0778223000",
+      "email": "sahanku@mm.lk",
+      "vehicleList": [
+        "SD 4339"
+      ],
+      "password": "1111",
+      "id": "ca1bd5d9-87bc-4e89-985e-6a09f25210c3"
+    },
+    {
+      "name": "Roshan Kulathunga",
+      "phoneNo": "0778223990",
+      "email": "roshank@mm.lk",
+      "vehicleList": [
+        "SD 4332"
+      ],
+      "password": "1111",
+      "id": "983d14b8-7bfb-4465-8b76-648524bd504d"
+    },
+    {
+      "name": "Samoshi Gamage",
+      "phoneNo": "0778333432",
+      "email": "samoshig@mm.lk",
+      "vehicleList": [
+        "EEE 1111"
+      ],
+      "password": "1212",
+      "id": "6b431899-6453-46fb-9b64-2aa785ce5b8c"
+    }
+  ]
+}

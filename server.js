@@ -6,6 +6,8 @@ const HttpError = require("./models/http-error");
 const router__employee = require("./routes/employee-routes")
 
 const server = express();
+
+// able to parse the sent JSON inside the request body
 server.use(bodyParser.json());
 
 server.use("/api/employee", router__employee)
