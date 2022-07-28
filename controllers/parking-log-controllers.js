@@ -17,8 +17,18 @@ const getLogsWithinGivenTime = (req, res) => {
 	const from = req.params.from
 	const to = req.params.to
 
+	console.log(date)
+	console.log(from)
+	console.log(to)
+
 	const searchedLogs = service__parkingLog.getLogsWithinGivenTime(date, from, to)
-	return;
+
+	if(searchedLogs === "no matching entries")
+		throw new HttpError(
+			"No matching entries found",
+			404
+		);
+	res.status(201).send({ status: "OK", data: searchedLogs });
 };
 
 const addLog = (req, res) => {

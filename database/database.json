@@ -114,6 +114,14 @@
       "status": "IN",
       "date": "2022-06-12",
       "time": "07:01 pm"
+    },
+    {
+      "employeeId": "000294387",
+      "name": "Madhawa Herath",
+      "vehicleId": "CDB 1000",
+      "status": "OUT",
+      "date": "2022-06-13",
+      "time": "07:01 pm"
     }
   ]
 }

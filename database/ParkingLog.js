@@ -1,27 +1,39 @@
-const database = require('./database.json')
-const {saveToDatabase} = require('./utils')
-// const DateTime = require('../models/date-time')
+const database = require("./database.json");
+const { saveToDatabase } = require("./utils");
+const DateTime = require("../models/date-time");
 
 const getAllLogs = () => {
-	return database.parkingLog
-}
+	return database.parkingLog;
+};
 
 const getLogsWithinGivenTime = (date, from, to) => {
+	const selected = database.parkingLog.filter((entry) => {
+		if (entry.date === date) {
+			return (
+				DateTime.isPast(from, entry.time) === false &&
+				DateTime.isPast(to, entry.time) === true
+			);
+		}
+	});
 
-	return
-}
+	if (!selected || selected.length === 0) {
+		return "no matching entries";
+	}
+	// console.log(selected);
+	return selected;
+};
 
 const addLog = (log) => {
-	database.parkingLog.push(log)
-	saveToDatabase(database)
-	return log
-}
+	database.parkingLog.push(log);
+	saveToDatabase(database);
+	return log;
+};
 
 module.exports = {
 	getAllLogs,
 	getLogsWithinGivenTime,
-	addLog
-}
+	addLog,
+};
 
 /*
 var input = "10:23 PM",
