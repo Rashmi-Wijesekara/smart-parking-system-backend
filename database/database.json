@@ -98,14 +98,22 @@
       "id": "6b431899-6453-46fb-9b64-2aa785ce5b8c"
     }
   ],
-
   "parkingLog": [
     {
       "employeeId": "000294392",
+      "name": "Mohan Perera",
       "vehicleId": "CDB 4306",
       "status": "IN",
       "date": "2022-06-12",
-      "time": "06:54 pm"
+      "time": "06:53 pm"
+    },
+    {
+      "employeeId": "000294387",
+      "name": "Madhawa Herath",
+      "vehicleId": "CDB 1000",
+      "status": "IN",
+      "date": "2022-06-12",
+      "time": "07:01 pm"
     }
   ]
 }

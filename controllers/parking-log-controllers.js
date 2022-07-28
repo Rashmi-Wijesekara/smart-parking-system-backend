@@ -13,11 +13,37 @@ const getAllLogs = (req, res) => {
 }
 
 const getLogsWithinGivenTime = (req, res) => {
+	const date = req.params.date
+	const from = req.params.from
+	const to = req.params.to
+
+	const searchedLogs = service__parkingLog.getLogsWithinGivenTime(date, from, to)
 	return;
 };
 
 const addLog = (req, res) => {
-	return;
+	const {body} = req;
+	const errors = validationResult(req);
+	if (!errors.isEmpty())
+		throw new HttpError(
+			"Invalid inputs passed, please check your data",
+			422
+		);
+	
+	const log = {
+		employeeId: body.employeeId,
+		name: body.name,
+		vehicleId: body.vehicleId,
+		status: body.status,
+		date: body.date,
+		time: body.time
+	}
+
+	const addedLog = service__parkingLog.addLog(log);
+
+	res
+		.status(201)
+		.send({ status: "OK", data: addedLog });
 };
 
 module.exports = {

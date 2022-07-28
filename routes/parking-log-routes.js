@@ -14,6 +14,13 @@ router.get("/", controllers__parkingLog.getAllLogs)
 router.get("/:date/:from/:to", controllers__parkingLog.getLogsWithinGivenTime)
 
 // POST api/parking-log/
-router.post("/", controllers__parkingLog.addLog)
+router.post("/", [
+	check('employeeId').not().isEmpty(),
+	check('name').not().isEmpty(),
+	check('vehicleId').not().isEmpty(),
+	check('status').not().isEmpty(),
+	check('date').not().isEmpty(),
+	check('time').not().isEmpty(),
+], controllers__parkingLog.addLog)
 
 module.exports = router;

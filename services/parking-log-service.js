@@ -10,8 +10,8 @@ const getLogsWithinGivenTime = (date, from, to) => {
 	return logs
 }
 
-const addLog = (emid, name, veid, status, date, time) => {
-	const addedLog = Employee.addLog(emid, name, veid, status, date, time)
+const addLog = (log) => {
+	const addedLog = ParkingLog.addLog(log)
 	return addedLog
 }
 
