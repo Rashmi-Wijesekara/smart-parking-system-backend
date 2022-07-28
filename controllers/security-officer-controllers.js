@@ -52,7 +52,27 @@ const addOfficer = (req, res) => {
 };
 
 const updateOfficer = (req, res) => {
-	return;
+	const errors = validationResult(req);
+	if (!errors.isEmpty())
+		throw new HttpError(
+			"Invalid inputs passed, please check your data",
+			422
+		);
+
+	const newPassword = req.body.password
+	const soid = req.params.soid
+
+	const updatedOfficer = service__securityOfficer.updateOfficer(soid, newPassword)
+	
+	if (!updatedOfficer)
+		throw new HttpError(
+			`could not find officer ID ${soid}`,
+			404
+		);
+	res.json({
+		status: "OK",
+		data: updatedOfficer,
+	});
 };
 
 module.exports = {

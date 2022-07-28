@@ -19,7 +19,7 @@ router.post('/', [
 router.get('/:soid', controllers__securityOfficer.getOfficerById);
 
 // PATCH api/security-officer/:soid
-router.patch('/:soid', controllers__securityOfficer.updateOfficer)
+router.patch('/:soid', [check('password').not().isEmpty()], controllers__securityOfficer.updateOfficer)
 
 
 // GET api/security-officer/:soid/today

@@ -18,8 +18,16 @@ const addOfficer = (newOfficer) => {
 	return addedOfficer
 }
 
-const updateOfficer = () => {
-	return
+// change password
+const updateOfficer = (soid, newPassword) => {
+	const updatedOfficer = SecurityOfficer.updateOfficer(
+		soid,
+		newPassword,
+		SecurityOfficer.isOfficerAvailable,
+		SecurityOfficer.findIndex__officer
+	)
+
+	return updatedOfficer
 }
 
 module.exports = {
