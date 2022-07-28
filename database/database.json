@@ -123,5 +123,28 @@
       "date": "2022-06-13",
       "time": "07:01 pm"
     }
+  ],
+  "securityOfficers": [
+    {
+      "name": "Mahinda Weerasinghe",
+      "phoneNo": "0331238864",
+      "email": "mahindaw@mm.lk",
+      "id": "123",
+      "password": "qqquu"
+    },
+    {
+      "name": "Sampath Weerasinghe",
+      "phoneNo": "0330008864",
+      "email": "sampathaw@mm.lk",
+      "password": "1111",
+      "id": "124"
+    },
+    {
+      "name": "Sahan Weerasinghe",
+      "phoneNo": "0331238800",
+      "email": "sahanw@mm.lk",
+      "password": "1111",
+      "id": "125"
+    }
   ]
 }

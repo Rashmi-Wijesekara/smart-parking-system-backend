@@ -5,6 +5,7 @@ const HttpError = require("./models/http-error");
 
 const router__employee = require("./routes/employee-routes")
 const router__parkingLog = require("./routes/parking-log-routes")
+const router__securityOfficer = require("./routes/security-officer-routes")
 
 const server = express();
 
@@ -14,6 +15,7 @@ server.use(bodyParser.json());
 // connect routers
 server.use("/api/employee", router__employee)
 server.use("/api/parking-log", router__parkingLog)
+server.use("/api/security-officer", router__securityOfficer)
 
 // check server configuration
 server.use("/", (req, res) => {
