@@ -4,7 +4,18 @@ const HttpError = require("../models/http-error");
 const service__securityOfficer = require("../services/security-officer-service")
 
 const getOfficerById = (req, res) => {
-	return
+	const soid = req.params.soid
+	const officer = service__securityOfficer.getOfficerById(soid)
+
+	if (!officer)
+		throw new HttpError(
+			`could not find officer ID ${soid}`,
+			404
+		);
+	res.json({
+		status: "OK",
+		data: officer,
+	});
 }
 
 const addOfficer = (req, res) => {
@@ -20,7 +31,8 @@ const addOfficer = (req, res) => {
 		name: body.name,
 		phoneNo: body.phoneNo,
 		email: body.email,
-		password: body.password
+		password: body.password,
+		id: body.id
 	};
 
 	const addedOfficer = service__securityOfficer.addOfficer(officer)

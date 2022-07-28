@@ -1,8 +1,8 @@
 const SecurityOfficer = require('../database/SecurityOfficer')
 const { v4: uuid } = require("uuid");
 
-const getOfficerById = () => {
-	return
+const getOfficerById = (soid) => {
+	return SecurityOfficer.getOfficerById(soid)
 }
 
 const addOfficer = (newOfficer) => {

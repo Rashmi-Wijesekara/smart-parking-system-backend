@@ -131,6 +131,20 @@
       "email": "mahindaw@mm.lk",
       "password": "1111",
       "id": "123"
+    },
+    {
+      "name": "Sampath Weerasinghe",
+      "phoneNo": "0330008864",
+      "email": "sampathaw@mm.lk",
+      "password": "1111",
+      "id": "124"
+    },
+    {
+      "name": "Sahan Weerasinghe",
+      "phoneNo": "0331238800",
+      "email": "sahanw@mm.lk",
+      "password": "1111",
+      "id": "125"
     }
   ]
 }

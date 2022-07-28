@@ -2,8 +2,10 @@ const database = require("./database.json");
 const { saveToDatabase } = require("./utils");
 const DateTime = require("../models/date-time");
 
-const getOfficerById = () => {
-	return;
+const getOfficerById = (soid) => {
+	return database.securityOfficers.find(
+		(found) => found.id === soid
+	);
 };
 
 const addOfficer = (newOfficer) => {
