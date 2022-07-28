@@ -123,5 +123,14 @@
       "date": "2022-06-13",
       "time": "07:01 pm"
     }
+  ],
+  "securityOfficers": [
+    {
+      "name": "Mahinda Weerasinghe",
+      "phoneNo": "0331238864",
+      "email": "mahindaw@mm.lk",
+      "password": "1111",
+      "id": "123"
+    }
   ]
 }
