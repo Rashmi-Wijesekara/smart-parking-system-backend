@@ -19,21 +19,21 @@ const getAllEmployees = (req, res) => {
 
 const getEmployeeById = (req, res, next) => {
 	const employeeId = req.params.emid;
-	const data =
-		service__employee.getEmployeeById(employeeId)
+	const data = service__employee
+		.getEmployeeById(employeeId)
 		.then((employee) => {
 			if (employee.length === 0)
-				return next(new HttpError(
-					`could not find employee ID ${employeeId}`,
-					404
-				))
+				return next(
+					new HttpError(
+						`could not find employee ID ${employeeId}`,
+						404
+					)
+				);
 			res.json({
 				status: "OK",
 				data: employee,
 			});
-		})
-
-	
+		});
 };
 
 const addNewEmployee = (req, res, next) => {
@@ -53,35 +53,37 @@ const addNewEmployee = (req, res, next) => {
 		password: body.password,
 	};
 
-	const some =  service__employee.addNewEmployee(employee)
-	.then((addedEmployee) => {
+	const some = service__employee
+		.addNewEmployee(employee)
+		.then((addedEmployee) => {
+			if (addedEmployee === "veid available") {
+				return next(
+					new HttpError(`vehicle ID already available`, 422)
+				);
+			} else if (addedEmployee === "emid available") {
+				return next(
+					new HttpError(
+						`Employee email already available`,
+						422
+					)
+				);
+			} else if (addedEmployee === "db error") {
+				return next(
+					new HttpError(`DB connection error`, 500)
+				);
+			}
 
-		if (addedEmployee === "veid available") {
-			return next(new HttpError(
-				`vehicle ID already available`,
-				422
-			))
-		}
-		else if (addedEmployee === "emid available") {
-			return next(
-				new HttpError(`Employee email already available`, 422)
-			);
-		} 
-		else if (addedEmployee === "db error") {
-			return next(new HttpError(`DB connection error`, 500))
-		}
-
-		return res
-			.status(201)
-			.send({ status: "OK", data: addedEmployee });
-	})
-	.catch((err) => {
-		console.log(err);
-	});
+			return res
+				.status(201)
+				.send({ status: "OK", data: addedEmployee });
+		})
+		.catch((err) => {
+			console.log(err);
+		});
 };
 
 // change password
-const updateEmployee = (req, res) => {
+const updateEmployee = (req, res, next) => {
 	const errors = validationResult(req);
 	if (!errors.isEmpty())
 		throw new HttpError(
@@ -91,20 +93,19 @@ const updateEmployee = (req, res) => {
 
 	const newPassword = req.body.password;
 	const employeeId = req.params.emid;
-	const updatedEmployee = service__employee.updateEmployee(
-		employeeId,
-		newPassword
-	);
+	const updatedOne = service__employee
+		.updateEmployee(employeeId, newPassword)
+		.then((updatedEmployee) => {
+			if (updatedEmployee === "emid invalid")
+				return next(new HttpError(
+					`could not find employee ID ${employeeId}`,
+					404
+				))
 
-	if (!updatedEmployee)
-		throw new HttpError(
-			`could not find employee ID ${employeeId}`,
-			404
-		);
-
-	res
-		.status(201)
-		.send({ status: "OK", data: updatedEmployee });
+			res
+				.status(201)
+				.send({ status: "OK", data: updatedEmployee });
+		});
 };
 
 // add or remove a vehicle from the vehicle list of an employee

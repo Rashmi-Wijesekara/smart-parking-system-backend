@@ -24,12 +24,10 @@ const addNewEmployee = async (newEmployee) => {
 };
 
 // change password
-const updateEmployee = (employeeId, newPassword) => {
-	const updatedEmployee = Employee.updateEmployee(
+const updateEmployee = async (employeeId, newPassword) => {
+	const updatedEmployee = await Employee.updateEmployee(
 		employeeId,
-		newPassword,
-		Employee.isEmployeeAvailable,
-		Employee.findIndex__employee
+		newPassword
 	);
 	return updatedEmployee;
 };

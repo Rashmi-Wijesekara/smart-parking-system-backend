@@ -65,19 +65,16 @@ const isVehicleAvailable = (veid, findIndex__vehicle) => {
 
 // get full employee data
 const getAllEmployees = async () => {
-	return await model__employee.find()
+	return await model__employee.find();
 };
 
 // get employee's data
 const getEmployeeById = (employeeId) => {
-	return model__employee.find(
-		{id: employeeId}
-	);
+	return model__employee.find({ id: employeeId });
 };
 
 // add new employee
 const addNewEmployee = async (newEmployee) => {
-
 	const employee = new model__employee({
 		name: newEmployee.name,
 		phoneNo: newEmployee.phoneNo,
@@ -113,27 +110,39 @@ const addNewEmployee = async (newEmployee) => {
 };
 
 // change password
-const updateEmployee = (
-	employeeId,
-	newPassword,
-	isEmployeeAvailable,
-	findIndex__employee
-) => {
-	const isEmployeeAvailableResult =
-		isEmployeeAvailable(employeeId);
+const updateEmployee = async (employeeId, newPassword) => {
+	// const isEmployeeAvailableResult =
+	// 	isEmployeeAvailable(employeeId);
 
-	// invalid employeeId
-	if (!isEmployeeAvailableResult) return;
+	// // invalid employeeId
+	// if (!isEmployeeAvailableResult) return;
 
-	const updatingEmployeeIndex =
-		findIndex__employee(employeeId);
+	const isEmployee = await model__employee
+		.find({ id: employeeId })
+		.exec();
 
-	delete database.employees[updatingEmployeeIndex].password;
-	database.employees[updatingEmployeeIndex].password =
-		newPassword;
+	if (isEmployee.length == 0) return "emid invalid";
 
-	saveToDatabase(database);
-	return database.employees[updatingEmployeeIndex];
+	await model__employee.updateOne(
+		{ id: employeeId },
+		{ $set: { password: newPassword } }
+	);
+	
+	const updatedEmployee = await model__employee
+		.find({ id: employeeId })
+		.exec();
+
+	return updatedEmployee
+
+	// const updatingEmployeeIndex =
+	// 	findIndex__employee(employeeId);
+
+	// delete database.employees[updatingEmployeeIndex].password;
+	// database.employees[updatingEmployeeIndex].password =
+	// 	newPassword;
+
+	// saveToDatabase(database);
+	// return database.employees[updatingEmployeeIndex];
 };
 
 // add new vehicle to the vehicle list of given employee
