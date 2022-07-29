@@ -70,8 +70,8 @@ const getAllEmployees = async () => {
 
 // get employee's data
 const getEmployeeById = (employeeId) => {
-	return database.employees.find(
-		(found) => found.id === employeeId
+	return model__employee.find(
+		{id: employeeId}
 	);
 };
 

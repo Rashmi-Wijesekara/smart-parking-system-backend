@@ -19,18 +19,21 @@ const getAllEmployees = (req, res) => {
 
 const getEmployeeById = (req, res, next) => {
 	const employeeId = req.params.emid;
-	const employee =
-		service__employee.getEmployeeById(employeeId);
+	const data =
+		service__employee.getEmployeeById(employeeId)
+		.then((employee) => {
+			if (employee.length === 0)
+				return next(new HttpError(
+					`could not find employee ID ${employeeId}`,
+					404
+				))
+			res.json({
+				status: "OK",
+				data: employee,
+			});
+		})
 
-	if (!employee)
-		throw new HttpError(
-			`could not find employee ID ${employeeId}`,
-			404
-		);
-	res.json({
-		status: "OK",
-		data: employee,
-	});
+	
 };
 
 const addNewEmployee = (req, res, next) => {

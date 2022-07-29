@@ -6,8 +6,8 @@ const getAllEmployees = async () => {
 	return allEmployees;
 };
 
-const getEmployeeById = (employeeId) => {
-	const employee = Employee.getEmployeeById(employeeId);
+const getEmployeeById = async(employeeId) => {
+	const employee = await Employee.getEmployeeById(employeeId);
 	return employee;
 };
 
