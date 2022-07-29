@@ -146,5 +146,28 @@
       "password": "1111",
       "id": "125"
     }
+  ],
+  "shiftLog": [
+    {
+      "officerId": "123",
+      "date": "2022-06-15",
+      "startTime": "08:32 am",
+      "endTime": "05:03 pm",
+      "shiftType": "Day"
+    },
+    {
+      "officerId": "123",
+      "date": "2022-07-29",
+      "startTime": "08:28 pm",
+      "shiftType": "Night",
+      "endTime": "05:02 pm"
+    },
+    {
+      "officerId": "124",
+      "date": "2022-06-13",
+      "startTime": "08:32 am",
+      "shiftType": "Day",
+      "endTime": "05:02 pm"
+    }
   ]
 }
