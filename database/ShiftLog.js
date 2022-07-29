@@ -45,8 +45,15 @@ const updateLog = (soid, endTime, isOfficerAvailable) => {
 	return database.shiftLog[updatingLogIndex]
 };
 
-const getTodaysLog = () => {
-	return;
+const getTodaysLog = (soid, isOfficerAvailable) => {
+	const isOfficerAvailableResult = isOfficerAvailable(soid);
+	if (!isOfficerAvailableResult) return "no officer";
+
+	const todaysLog = database.shiftLog.find((log) => {
+		return (log.officerId === soid && log.date === DateTime.getDate())
+	})
+
+	return todaysLog
 };
 
 module.exports = {

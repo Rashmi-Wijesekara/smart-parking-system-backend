@@ -50,6 +50,13 @@ const addLog = (req, res) => {
 };
 
 const updateLog = (req, res) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty())
+		throw new HttpError(
+			"Invalid inputs passed, please check your data",
+			422
+		);
+
 	const soid = req.params.soid
 	const endTime = req.body.endTime
 
@@ -72,7 +79,21 @@ const updateLog = (req, res) => {
 };
 
 const getTodaysLog = (req, res) => {
-	return;
+	const soid = req.params.soid
+	const todaysLog = service__shiftLog.getTodaysLog(soid);
+
+	if (todaysLog === "no officer")
+		throw new HttpError(
+			`could not find a security officer for ID ${soid}`,
+			404
+		);
+	else if (!todaysLog)
+		throw new HttpError(
+			`no entries for ID ${soid} today`,
+			404
+		);
+
+	res.status(201).send({ status: "OK", data: todaysLog });
 };
 
 module.exports = {

@@ -23,8 +23,12 @@ const updateLog = (soid, endTime) => {
 	return updatedLog
 };
 
-const getTodaysLog = () => {
-	return;
+const getTodaysLog = (soid) => {
+	const todaysLog = ShiftLog.getTodaysLog(
+		soid,
+		SecurityOfficer.isOfficerAvailable
+	);
+	return todaysLog
 };
 
 module.exports = {
