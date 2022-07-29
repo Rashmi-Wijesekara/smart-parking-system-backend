@@ -1,27 +1,40 @@
 const database = require("./database.json");
 const { saveToDatabase } = require("./utils");
 const DateTime = require("../models/date-time");
+const SecurityOfficer = require("./SecurityOfficer");
 
-const getAllLogsById = () => {
-	return
-}
+const getAllLogsById = (soid) => {
+	return database.shiftLog.filter(
+		(found) => found.officerId === soid
+	);
+};
 
-const addLog = (log) => {
-	const type = DateTime.shiftType(log.startTime)
+// add start time
+const addLog = (log, isOfficerAvailable) => {
+	
+	const isOfficerAvailableResult = isOfficerAvailable(log.officerId);
+	if (!isOfficerAvailableResult) return;
 
-	const addingLog = {...log, shiftType: type}
+	const type = DateTime.shiftType(log.startTime);
+	const endTime = "---";
+	const addingLog = {
+		...log,
+		endTime: endTime,
+		shiftType: type,
+	};
 	database.shiftLog.push(addingLog);
 	saveToDatabase(database);
 	return addingLog;
-}
+};
 
+// add end time
 const updateLog = () => {
-	return
-}
+	return;
+};
 
 const getTodaysLog = () => {
-	return
-}
+	return;
+};
 
 module.exports = {
 	getAllLogsById,

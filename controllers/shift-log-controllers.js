@@ -4,7 +4,19 @@ const HttpError = require("../models/http-error");
 const service__shiftLog = require("../services/shift-log-service");
 
 const getAllLogsById = (req, res) => {
-	return;
+	const soid = req.params.soid;
+	const allLogs = service__shiftLog.getAllLogsById(soid);
+
+	if(!allLogs || allLogs.length === 0) {
+		throw new HttpError(
+			`could not find any shift logs for ID ${soid}`,
+			404
+		);
+	}
+	res.send({
+		status: "OK",
+		data: allLogs,
+	});
 };
 
 const addLog = (req, res) => {
@@ -20,12 +32,19 @@ const addLog = (req, res) => {
 	const soid = req.params.soid;
 
 	const log = {
-		soid: soid,
+		officerId: soid,
 		date: date,
 		startTime: startTime,
 	};
 
 	const addedLog = service__shiftLog.addLog(log);
+
+	if (!addedLog) {
+		throw new HttpError(
+			`could not find a security officer for ID ${soid}`,
+			404
+		);
+	}
 
 	res.status(201).send({ status: "OK", data: addedLog });
 };
