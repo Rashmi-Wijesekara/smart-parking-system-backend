@@ -50,7 +50,25 @@ const addLog = (req, res) => {
 };
 
 const updateLog = (req, res) => {
-	return;
+	const soid = req.params.soid
+	const endTime = req.body.endTime
+
+	const updatedLog = service__shiftLog.updateLog(soid, endTime);
+
+	if (updatedLog === "no log found")
+		throw new HttpError(
+			`could not find a log for id ${soid} to update the end time`,
+			404
+		);
+	else if (!updatedLog)
+		throw new HttpError(
+			`could not find a security officer for ID ${soid}`,
+			404
+		);
+	
+	res
+		.status(201)
+		.send({ status: "OK", data: updatedLog });
 };
 
 const getTodaysLog = (req, res) => {

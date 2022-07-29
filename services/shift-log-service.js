@@ -14,8 +14,13 @@ const addLog = (log) => {
 	return addedLog;
 };
 
-const updateLog = () => {
-	return;
+const updateLog = (soid, endTime) => {
+	const updatedLog = ShiftLog.updateLog(
+		soid,
+		endTime,
+		SecurityOfficer.isOfficerAvailable
+	);
+	return updatedLog
 };
 
 const getTodaysLog = () => {

@@ -159,15 +159,15 @@
       "officerId": "123",
       "date": "2022-06-12",
       "startTime": "08:28 pm",
-      "endTime": "---",
-      "shiftType": "Night"
+      "shiftType": "Night",
+      "endTime": "05:02 pm"
     },
     {
       "officerId": "124",
       "date": "2022-06-13",
       "startTime": "08:32 am",
-      "endTime": "---",
-      "shiftType": "Day"
+      "shiftType": "Day",
+      "endTime": "05:02 pm"
     }
   ]
 }

@@ -28,8 +28,21 @@ const addLog = (log, isOfficerAvailable) => {
 };
 
 // add end time
-const updateLog = () => {
-	return;
+const updateLog = (soid, endTime, isOfficerAvailable) => {
+	const isOfficerAvailableResult = isOfficerAvailable(soid);
+	if (!isOfficerAvailableResult) return;
+
+	const updatingLogIndex = database.shiftLog.findIndex((log) => {
+		return (log.officerId === soid && log.endTime === "---")
+	})
+
+	if(updatingLogIndex === -1) return "no log found"
+
+	delete database.shiftLog[updatingLogIndex].endTime
+	database.shiftLog[updatingLogIndex].endTime = endTime
+
+	saveToDatabase(database);
+	return database.shiftLog[updatingLogIndex]
 };
 
 const getTodaysLog = () => {
