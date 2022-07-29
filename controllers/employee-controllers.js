@@ -109,7 +109,7 @@ const updateEmployee = (req, res, next) => {
 };
 
 // add or remove a vehicle from the vehicle list of an employee
-const updateVehicleList = (req, res) => {
+const updateVehicleList = (req, res, next) => {
 	const type = req.params.type;
 	const emid = req.params.emid;
 	let updatedEmployee = null;
@@ -123,7 +123,7 @@ const updateVehicleList = (req, res) => {
 		updatedEmployee = service__employee.addVehicle(
 			emid,
 			updatingVehicleId
-		);
+		)
 	} else if (type === "remove") {
 		updatedEmployee = service__employee.removeVehicle(
 			emid,
@@ -153,6 +153,67 @@ const updateVehicleList = (req, res) => {
 		.send({ status: "OK", data: updatedEmployee });
 };
 
+const addVehicle = (req, res, next) => {
+	const emid = req.params.emid;
+	const updatingVehicleId = req.body.vehicleId;
+
+	if (!updatingVehicleId) {
+		return next(new HttpError(`vehicle ID is required`, 422))
+	}
+
+	const updated = service__employee
+		.addVehicle(emid, updatingVehicleId)
+		.then((updatedEmployee) => {
+			if (updatedEmployee === "emid available") {
+				return next(new HttpError(
+					`could not find employee ID ${emid}`,
+					404
+				))
+			} else if (updatedEmployee === "veid available") {
+				return next(new HttpError(
+					`vehicle ID ${updatingVehicleId} already available`,
+					422
+				))
+			}
+			res
+				.status(201)
+				.send({ status: "OK", data: updatedEmployee });
+		});
+}
+
+const removeVehicle = (req, res, next) => {
+	const emid = req.params.emid;
+	const updatingVehicleId = req.body.vehicleId;
+
+	if (!updatingVehicleId) {
+		return next(
+			new HttpError(`vehicle ID is required`, 422)
+		);
+	}
+	const updated = service__employee
+		.removeVehicle(emid, updatingVehicleId)
+		.then((updatedEmployee) => {
+			if (updatedEmployee === "emid available") {
+				return next(
+					new HttpError(
+						`could not find employee ID ${emid}`,
+						404
+					)
+				);
+			} else if (updatedEmployee === "veid unavailable") {
+				return next(
+					new HttpError(
+						`could not find vehicle ID ${updatingVehicleId} in the given employee's vehicle list`,
+						404
+					)
+				);
+			}
+			res
+				.status(201)
+				.send({ status: "OK", data: updatedEmployee });
+		});
+}
+
 const getVehicleList = (req, res) => {
 	const emid = req.params.emid;
 	const vehicleList =
@@ -173,6 +234,7 @@ module.exports = {
 	getEmployeeById,
 	addNewEmployee,
 	updateEmployee,
-	updateVehicleList,
+	addVehicle,
+	removeVehicle,
 	getVehicleList,
 };

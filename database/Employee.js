@@ -97,6 +97,7 @@ const addNewEmployee = async (newEmployee) => {
 	});
 
 	if (status.length > 0) {
+		// given vehicle id is already added by another employee
 		return "veid available";
 	}
 
@@ -111,12 +112,6 @@ const addNewEmployee = async (newEmployee) => {
 
 // change password
 const updateEmployee = async (employeeId, newPassword) => {
-	// const isEmployeeAvailableResult =
-	// 	isEmployeeAvailable(employeeId);
-
-	// // invalid employeeId
-	// if (!isEmployeeAvailableResult) return;
-
 	const isEmployee = await model__employee
 		.find({ id: employeeId })
 		.exec();
@@ -127,102 +122,69 @@ const updateEmployee = async (employeeId, newPassword) => {
 		{ id: employeeId },
 		{ $set: { password: newPassword } }
 	);
-	
+
 	const updatedEmployee = await model__employee
 		.find({ id: employeeId })
 		.exec();
 
-	return updatedEmployee
-
-	// const updatingEmployeeIndex =
-	// 	findIndex__employee(employeeId);
-
-	// delete database.employees[updatingEmployeeIndex].password;
-	// database.employees[updatingEmployeeIndex].password =
-	// 	newPassword;
-
-	// saveToDatabase(database);
-	// return database.employees[updatingEmployeeIndex];
+	return updatedEmployee;
 };
 
 // add new vehicle to the vehicle list of given employee
-const addVehicle = (
-	emid,
-	veid,
-	isEmployeeAvailable,
-	findIndex__employee,
-	isVehicleAvailable,
-	findIndex__vehicle
-) => {
-	const isEmployeeAvailableResult =
-		isEmployeeAvailable(emid);
-	const vehicleStatus = isVehicleAvailable(
-		veid,
-		findIndex__vehicle
-	);
+const addVehicle = async (emid, veid) => {
+	const isEmployee = await model__employee
+		.find({ id: emid })
+		.exec();
 
 	// invalid employee id
-	// already available vehicle id
-	if (isEmployeeAvailableResult === false) {
-		return "emid available";
-	} else if (vehicleStatus === true) {
-		return "veid available";
-	}
+	if (isEmployee.length == 0) return "emid available";
 
-	const employeeIndexResult = findIndex__employee(emid);
-	const updatedEmployee =
-		database.employees[employeeIndexResult];
+	const status = await model__employee.where({
+		vehicleList: { $in: [veid] },
+	});
 
-	const updatedVehicleList = updatedEmployee.vehicleList;
-	updatedVehicleList.push(veid);
+	// vehicle id already added
+	if (status.length > 0) return "veid available";
 
-	delete updatedEmployee.vehicleList;
-	updatedEmployee.vehicleList = updatedVehicleList;
+	await model__employee.updateOne(
+		{ id: emid },
+		{ $push: { vehicleList: veid } }
+	);
 
-	saveToDatabase(database);
+	const updatedEmployee = await model__employee
+		.find({ id: emid })
+		.exec();
+
 	return updatedEmployee;
 };
 
 // remove given vehicle from employee's vehicle list
-const removeVehicle = (
-	emid,
-	veid,
-	isEmployeeAvailable,
-	findIndex__employee,
-	findIndex__vehicle
-) => {
-	let found = false;
+const removeVehicle = async (emid, veid) => {
 
-	const isEmployeeAvailableResult =
-		isEmployeeAvailable(emid);
+	const isEmployee = await model__employee
+		.find({ id: emid })
+		.exec();
 
 	// invalid employee id
-	if (isEmployeeAvailableResult === false) {
-		return "emid available";
-	}
+	if (isEmployee.length == 0) return "emid available";
 
-	const employeeIndex = findIndex__employee(emid);
-	const updatingEmployee =
-		database.employees[employeeIndex];
-	let updatingVehicleList = updatingEmployee.vehicleList;
+	const status = await model__employee.where({
+		vehicleList: { $in: [veid] },
+	});
 
-	let index = findIndex__vehicle(veid, updatingVehicleList);
+	// vehicle id not available
+	if (status.length === 0) return "veid unavailable";
 
-	if (index <= -1) {
-		return "veid unavailable";
-	}
+	await model__employee.updateOne(
+		{id: emid},
+		{$pull: {vehicleList: veid}}
+	)
 
-	deleted = updatingVehicleList.splice(index, 1);
+	const updatedEmployee = await model__employee
+		.find({ id: emid })
+		.exec();
 
-	// new vehicle list
-	const updatedVehicleList = updatingEmployee.vehicleList;
-
-	// update the new vehicle list in the database instance
-	database.employees[employeeIndex].vehicleList =
-		updatedVehicleList;
-
-	saveToDatabase(database);
-	return database.employees[employeeIndex];
+	return updatedEmployee
 };
 
 // return the vehicle list of given employee

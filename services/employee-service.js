@@ -6,8 +6,10 @@ const getAllEmployees = async () => {
 	return allEmployees;
 };
 
-const getEmployeeById = async(employeeId) => {
-	const employee = await Employee.getEmployeeById(employeeId);
+const getEmployeeById = async (employeeId) => {
+	const employee = await Employee.getEmployeeById(
+		employeeId
+	);
 	return employee;
 };
 
@@ -34,25 +36,18 @@ const updateEmployee = async (employeeId, newPassword) => {
 
 // updateVehicleList
 // (employeeId, updatingVehicleId)
-const addVehicle = (emid, veid) => {
-	const updatedEmployee = Employee.addVehicle(
+const addVehicle = async (emid, veid) => {
+	const updatedEmployee = await Employee.addVehicle(
 		emid,
-		veid,
-		Employee.isEmployeeAvailable,
-		Employee.findIndex__employee,
-		Employee.isVehicleAvailable,
-		Employee.findIndex__vehicle
+		veid
 	);
 	return updatedEmployee;
 };
 
-const removeVehicle = (emid, veid) => {
-	const updatedEmployee = Employee.removeVehicle(
+const removeVehicle = async (emid, veid) => {
+	const updatedEmployee = await Employee.removeVehicle(
 		emid,
-		veid,
-		Employee.isEmployeeAvailable,
-		Employee.findIndex__employee,
-		Employee.findIndex__vehicle
+		veid
 	);
 	return updatedEmployee;
 };
