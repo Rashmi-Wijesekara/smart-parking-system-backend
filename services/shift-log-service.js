@@ -4,8 +4,9 @@ const getAllLogsById = () => {
 	return
 }
 
-const addLog = () => {
-	return
+const addLog = (log) => {
+	const addedLog = ShiftLog.addLog(log)
+	return addedLog
 }
 
 const updateLog = () => {

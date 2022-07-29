@@ -84,8 +84,17 @@ const isPast = (checkTime, selectedTime) => {
 	return result;
 };
 
+// return the shift type based on am OR pm of the shift start time
+const shiftType = (startTime) => {
+	const ampm = startTime.substring(6);
+	
+	if(ampm === 'am') return "Day"
+	else if(ampm === 'pm') return "Night"
+}
+
 module.exports = {
 	getDate,
 	getTime,
-	isPast
+	isPast,
+	shiftType
 };
