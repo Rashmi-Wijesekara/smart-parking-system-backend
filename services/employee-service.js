@@ -11,18 +11,18 @@ const getEmployeeById = (employeeId) => {
 	return employee;
 };
 
-const addNewEmployee = (newEmployee) => {
+const addNewEmployee = async (newEmployee) => {
 	const employeeToInsert = {
 		...newEmployee,
 		id: uuid(), //generate unique id
 	};
 
-	const addedEmployee = Employee.addNewEmployee(
+	const addedEmployee = await Employee.addNewEmployee(
 		employeeToInsert,
 		Employee.isVehicleAvailable,
 		Employee.findIndex__vehicle
-	);
-	return addedEmployee;
+	)
+	return addedEmployee
 };
 
 // change password

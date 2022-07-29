@@ -1,12 +1,13 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
 
 const HttpError = require("./models/http-error");
 
-const router__employee = require("./routes/employee-routes")
-const router__parkingLog = require("./routes/parking-log-routes")
-const router__securityOfficer = require("./routes/security-officer-routes")
-const router__shiftLog = require("./routes/shift-log-routes")
+const router__employee = require("./routes/employee-routes");
+const router__parkingLog = require("./routes/parking-log-routes");
+const router__securityOfficer = require("./routes/security-officer-routes");
+const router__shiftLog = require("./routes/shift-log-routes");
 
 const server = express();
 
@@ -14,10 +15,16 @@ const server = express();
 server.use(bodyParser.json());
 
 // connect routers
-server.use("/api/employee", router__employee)
-server.use("/api/parking-log", router__parkingLog)
-server.use("/api/security-officer/shift-log", router__shiftLog)
-server.use("/api/security-officer", router__securityOfficer)
+server.use("/api/employee", router__employee);
+server.use("/api/parking-log", router__parkingLog);
+server.use(
+	"/api/security-officer/shift-log",
+	router__shiftLog
+);
+server.use(
+	"/api/security-officer",
+	router__securityOfficer
+);
 
 // check server configuration
 server.use("/", (req, res) => {
@@ -43,4 +50,15 @@ server.use((error, req, res, next) => {
 	});
 });
 
-server.listen(5000);
+// if the database connection is successfull we can start the server
+mongoose
+	.connect(
+		"mongodb+srv://megamedia:smartparkingsystem@cluster0.wbfkpvo.mongodb.net/smart-parking-system?retryWrites=true&w=majority"
+	)
+	.then(() => {
+		server.listen(5000);
+	})
+	.catch((err) => {
+		console.log(err);
+	});
+

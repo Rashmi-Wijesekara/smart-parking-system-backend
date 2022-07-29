@@ -28,7 +28,7 @@ const getEmployeeById = (req, res, next) => {
 	});
 };
 
-const addNewEmployee = (req, res) => {
+const addNewEmployee = (req, res, next) => {
 	const { body } = req;
 	const errors = validationResult(req);
 	if (!errors.isEmpty())
@@ -45,18 +45,31 @@ const addNewEmployee = (req, res) => {
 		password: body.password,
 	};
 
-	const addedEmployee =
-		service__employee.addNewEmployee(employee);
+	const some =  service__employee.addNewEmployee(employee)
+	.then((addedEmployee) => {
 
-	if (addedEmployee === "veid available") {
-		throw new HttpError(
-			`vehicle ID already available`,
-			422
-		);
-	}
-	res
-		.status(201)
-		.send({ status: "OK", data: addedEmployee });
+		if (addedEmployee === "veid available") {
+			return next(new HttpError(
+				`vehicle ID already available`,
+				422
+			))
+		}
+		else if (addedEmployee === "emid available") {
+			return next(
+				new HttpError(`Employee email already available`, 422)
+			);
+		} 
+		else if (addedEmployee === "db error") {
+			return next(new HttpError(`DB connection error`, 500))
+		}
+
+		return res
+			.status(201)
+			.send({ status: "OK", data: addedEmployee });
+	})
+	.catch((err) => {
+		console.log(err);
+	});
 };
 
 // change password
