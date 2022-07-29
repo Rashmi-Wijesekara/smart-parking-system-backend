@@ -4,12 +4,17 @@ const HttpError = require("../models/http-error");
 const service__employee = require("../services/employee-service");
 
 const getAllEmployees = (req, res) => {
-	const allEmployees = service__employee.getAllEmployees();
-
-	res.send({
-		status: "OK",
-		data: allEmployees,
-	});
+	const allEmployees = service__employee
+		.getAllEmployees()
+		.then((employees) => {
+			res.send({
+				status: "OK",
+				data: employees,
+			});
+		})
+		.catch((err) => {
+			console.log(err);
+		});
 };
 
 const getEmployeeById = (req, res, next) => {

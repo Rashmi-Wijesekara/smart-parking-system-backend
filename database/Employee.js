@@ -64,8 +64,8 @@ const isVehicleAvailable = (veid, findIndex__vehicle) => {
 // ***************************************************************************************
 
 // get full employee data
-const getAllEmployees = () => {
-	return database.employees;
+const getAllEmployees = async () => {
+	return await model__employee.find()
 };
 
 // get employee's data
@@ -76,11 +76,8 @@ const getEmployeeById = (employeeId) => {
 };
 
 // add new employee
-const addNewEmployee = async (
-	newEmployee,
-	isVehicleAvailable,
-	findIndex__vehicle
-) => {
+const addNewEmployee = async (newEmployee) => {
+
 	const employee = new model__employee({
 		name: newEmployee.name,
 		phoneNo: newEmployee.phoneNo,
@@ -95,7 +92,7 @@ const addNewEmployee = async (
 		.exec();
 
 	if (isAlreadyAdded.length > 0) {
-		return "emid available"
+		return "emid available";
 	}
 
 	const status = await model__employee.where({

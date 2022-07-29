@@ -1,8 +1,8 @@
 const Employee = require("../database/Employee");
 const { v4: uuid } = require("uuid");
 
-const getAllEmployees = () => {
-	const allEmployees = Employee.getAllEmployees();
+const getAllEmployees = async () => {
+	const allEmployees = await Employee.getAllEmployees();
 	return allEmployees;
 };
 
@@ -18,11 +18,9 @@ const addNewEmployee = async (newEmployee) => {
 	};
 
 	const addedEmployee = await Employee.addNewEmployee(
-		employeeToInsert,
-		Employee.isVehicleAvailable,
-		Employee.findIndex__vehicle
-	)
-	return addedEmployee
+		employeeToInsert
+	);
+	return addedEmployee;
 };
 
 // change password
