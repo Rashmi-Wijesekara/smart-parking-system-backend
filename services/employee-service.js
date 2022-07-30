@@ -1,72 +1,59 @@
 const Employee = require("../database/Employee");
 const { v4: uuid } = require("uuid");
 
-const getAllEmployees = () => {
-	const allEmployees = Employee.getAllEmployees();
+const getAllEmployees = async () => {
+	const allEmployees = await Employee.getAllEmployees();
 	return allEmployees;
 };
 
-const getEmployeeById = (employeeId) => {
-	const employee = Employee.getEmployeeById(employeeId);
+const getEmployeeById = async (employeeId) => {
+	const employee = await Employee.getEmployeeById(
+		employeeId
+	);
 	return employee;
 };
 
-const addNewEmployee = (newEmployee) => {
+const addNewEmployee = async (newEmployee) => {
 	const employeeToInsert = {
 		...newEmployee,
 		id: uuid(), //generate unique id
 	};
 
-	const addedEmployee = Employee.addNewEmployee(
-		employeeToInsert,
-		Employee.isVehicleAvailable,
-		Employee.findIndex__vehicle
+	const addedEmployee = await Employee.addNewEmployee(
+		employeeToInsert
 	);
 	return addedEmployee;
 };
 
 // change password
-const updateEmployee = (employeeId, newPassword) => {
-	const updatedEmployee = Employee.updateEmployee(
+const updateEmployee = async (employeeId, newPassword) => {
+	const updatedEmployee = await Employee.updateEmployee(
 		employeeId,
-		newPassword,
-		Employee.isEmployeeAvailable,
-		Employee.findIndex__employee
+		newPassword
 	);
 	return updatedEmployee;
 };
 
 // updateVehicleList
 // (employeeId, updatingVehicleId)
-const addVehicle = (emid, veid) => {
-	const updatedEmployee = Employee.addVehicle(
+const addVehicle = async (emid, veid) => {
+	const updatedEmployee = await Employee.addVehicle(
 		emid,
-		veid,
-		Employee.isEmployeeAvailable,
-		Employee.findIndex__employee,
-		Employee.isVehicleAvailable,
-		Employee.findIndex__vehicle
+		veid
 	);
 	return updatedEmployee;
 };
 
-const removeVehicle = (emid, veid) => {
-	const updatedEmployee = Employee.removeVehicle(
+const removeVehicle = async (emid, veid) => {
+	const updatedEmployee = await Employee.removeVehicle(
 		emid,
-		veid,
-		Employee.isEmployeeAvailable,
-		Employee.findIndex__employee,
-		Employee.findIndex__vehicle
+		veid
 	);
 	return updatedEmployee;
 };
 
-const getVehicleList = (emid) => {
-	const vehicleList = Employee.getVehicleList(
-		emid,
-		Employee.isEmployeeAvailable,
-		Employee.findIndex__employee
-	);
+const getVehicleList = async (emid) => {
+	const vehicleList = await Employee.getVehicleList(emid);
 	return vehicleList;
 };
 

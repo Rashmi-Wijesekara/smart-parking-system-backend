@@ -1,59 +1,89 @@
-const database = require("./database.json");
-const { saveToDatabase } = require("./utils");
-const DateTime = require("../models/date-time");
-const SecurityOfficer = require("./SecurityOfficer");
+const mongoose = require("mongoose");
+const model__shiftLog = require("../mongodb/ShiftLog-model");
+const model__officer = require("../mongodb/Officer-model");
 
-const getAllLogsById = (soid) => {
-	return database.shiftLog.filter(
-		(found) => found.officerId === soid
-	);
+const DateTime = require("../models/date-time");
+
+const getAllLogsById = async (soid) => {
+	return await model__shiftLog
+		.find({ id: soid })
+		.sort({ date: -1 });
 };
 
 // add start time
-const addLog = (log, isOfficerAvailable) => {
-	
-	const isOfficerAvailableResult = isOfficerAvailable(log.officerId);
-	if (!isOfficerAvailableResult) return;
+const addLog = async (log) => {
+	const isEmployee = await model__officer
+		.find({ id: log.officerId })
+		.exec();
+	// invalid officer id
+	if (isEmployee.length == 0) return;
 
 	const type = DateTime.shiftType(log.startTime);
 	const endTime = "---";
-	const addingLog = {
+	const l = {
 		...log,
 		endTime: endTime,
 		shiftType: type,
 	};
-	database.shiftLog.push(addingLog);
-	saveToDatabase(database);
+
+	const addingLog = new model__shiftLog({
+		officerId: l.officerId,
+		date: l.date,
+		startTime: l.startTime,
+		endTime: l.endTime,
+		shiftType: l.shiftType,
+	});
+
+	await addingLog.save();
 	return addingLog;
 };
 
 // add end time
-const updateLog = (soid, endTime, isOfficerAvailable) => {
-	const isOfficerAvailableResult = isOfficerAvailable(soid);
-	if (!isOfficerAvailableResult) return;
+const updateLog = async (soid, endTime) => {
+	const isOfficer = await model__officer
+		.find({ id: soid })
+		.exec();
+	// invalid officer id
+	if (isOfficer.length == 0) return;
 
-	const updatingLogIndex = database.shiftLog.findIndex((log) => {
-		return (log.officerId === soid && log.endTime === "---")
-	})
+	const check = await model__shiftLog.find({
+		officerId: soid,
+		endTime: "---",
+	});
+	
+	const checkDate = check[0].date;
 
-	if(updatingLogIndex === -1) return "no log found"
+	if (check.length == 0) return "no log found";
 
-	delete database.shiftLog[updatingLogIndex].endTime
-	database.shiftLog[updatingLogIndex].endTime = endTime
+	await model__shiftLog.updateOne(
+		{ officerId: soid, endTime: "---" },
+		{ $set: { endTime: endTime } }
+	);
 
-	saveToDatabase(database);
-	return database.shiftLog[updatingLogIndex]
+	const updatedShift = await model__shiftLog.find({
+		officerId: soid,
+		endTime: endTime,
+		date: checkDate,
+	});
+
+	return updatedShift;
 };
 
-const getTodaysLog = (soid, isOfficerAvailable) => {
-	const isOfficerAvailableResult = isOfficerAvailable(soid);
-	if (!isOfficerAvailableResult) return "no officer";
+const getTodaysLog = async (soid) => {
 
-	const todaysLog = database.shiftLog.find((log) => {
-		return (log.officerId === soid && log.date === DateTime.getDate())
+	const isOfficer = await model__officer
+		.find({ id: soid })
+		.exec();
+	// invalid officer id
+	if (isOfficer.length == 0) return;
+
+	const today = DateTime.getDate()
+
+	const todayLog = await model__shiftLog.find({
+		officerId: soid,
+		date: today
 	})
-
-	return todaysLog
+	return todayLog
 };
 
 module.exports = {

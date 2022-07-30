@@ -4,31 +4,39 @@ const HttpError = require("../models/http-error");
 const service__employee = require("../services/employee-service");
 
 const getAllEmployees = (req, res) => {
-	const allEmployees = service__employee.getAllEmployees();
-
-	res.send({
-		status: "OK",
-		data: allEmployees,
-	});
+	const allEmployees = service__employee
+		.getAllEmployees()
+		.then((employees) => {
+			res.send({
+				status: "OK",
+				data: employees,
+			});
+		})
+		.catch((err) => {
+			console.log(err);
+		});
 };
 
 const getEmployeeById = (req, res, next) => {
 	const employeeId = req.params.emid;
-	const employee =
-		service__employee.getEmployeeById(employeeId);
-
-	if (!employee)
-		throw new HttpError(
-			`could not find employee ID ${employeeId}`,
-			404
-		);
-	res.json({
-		status: "OK",
-		data: employee,
-	});
+	const data = service__employee
+		.getEmployeeById(employeeId)
+		.then((employee) => {
+			if (employee.length === 0)
+				return next(
+					new HttpError(
+						`could not find employee ID ${employeeId}`,
+						404
+					)
+				);
+			res.json({
+				status: "OK",
+				data: employee,
+			});
+		});
 };
 
-const addNewEmployee = (req, res) => {
+const addNewEmployee = (req, res, next) => {
 	const { body } = req;
 	const errors = validationResult(req);
 	if (!errors.isEmpty())
@@ -45,22 +53,37 @@ const addNewEmployee = (req, res) => {
 		password: body.password,
 	};
 
-	const addedEmployee =
-		service__employee.addNewEmployee(employee);
+	const some = service__employee
+		.addNewEmployee(employee)
+		.then((addedEmployee) => {
+			if (addedEmployee === "veid available") {
+				return next(
+					new HttpError(`vehicle ID already available`, 422)
+				);
+			} else if (addedEmployee === "emid available") {
+				return next(
+					new HttpError(
+						`Employee email already available`,
+						422
+					)
+				);
+			} else if (addedEmployee === "db error") {
+				return next(
+					new HttpError(`DB connection error`, 500)
+				);
+			}
 
-	if (addedEmployee === "veid available") {
-		throw new HttpError(
-			`vehicle ID already available`,
-			422
-		);
-	}
-	res
-		.status(201)
-		.send({ status: "OK", data: addedEmployee });
+			return res
+				.status(201)
+				.send({ status: "OK", data: addedEmployee });
+		})
+		.catch((err) => {
+			console.log(err);
+		});
 };
 
 // change password
-const updateEmployee = (req, res) => {
+const updateEmployee = (req, res, next) => {
 	const errors = validationResult(req);
 	if (!errors.isEmpty())
 		throw new HttpError(
@@ -70,24 +93,25 @@ const updateEmployee = (req, res) => {
 
 	const newPassword = req.body.password;
 	const employeeId = req.params.emid;
-	const updatedEmployee = service__employee.updateEmployee(
-		employeeId,
-		newPassword
-	);
+	const updatedOne = service__employee
+		.updateEmployee(employeeId, newPassword)
+		.then((updatedEmployee) => {
+			if (updatedEmployee === "emid invalid")
+				return next(
+					new HttpError(
+						`could not find employee ID ${employeeId}`,
+						404
+					)
+				);
 
-	if (!updatedEmployee)
-		throw new HttpError(
-			`could not find employee ID ${employeeId}`,
-			404
-		);
-
-	res
-		.status(201)
-		.send({ status: "OK", data: updatedEmployee });
+			res
+				.status(201)
+				.send({ status: "OK", data: updatedEmployee });
+		});
 };
 
 // add or remove a vehicle from the vehicle list of an employee
-const updateVehicleList = (req, res) => {
+const updateVehicleList = (req, res, next) => {
 	const type = req.params.type;
 	const emid = req.params.emid;
 	let updatedEmployee = null;
@@ -131,19 +155,90 @@ const updateVehicleList = (req, res) => {
 		.send({ status: "OK", data: updatedEmployee });
 };
 
-const getVehicleList = (req, res) => {
+const addVehicle = (req, res, next) => {
 	const emid = req.params.emid;
-	const vehicleList =
-		service__employee.getVehicleList(emid);
+	const updatingVehicleId = req.body.vehicleId;
 
-	if (vehicleList === "emid available") {
-		throw new HttpError(
-			`could not find employee ID ${emid}`,
-			404
+	if (!updatingVehicleId) {
+		return next(
+			new HttpError(`vehicle ID is required`, 422)
 		);
 	}
 
-	res.status(201).send({ status: "OK", data: vehicleList });
+	const updated = service__employee
+		.addVehicle(emid, updatingVehicleId)
+		.then((updatedEmployee) => {
+			if (updatedEmployee === "emid available") {
+				return next(
+					new HttpError(
+						`could not find employee ID ${emid}`,
+						404
+					)
+				);
+			} else if (updatedEmployee === "veid available") {
+				return next(
+					new HttpError(
+						`vehicle ID ${updatingVehicleId} already available`,
+						422
+					)
+				);
+			}
+			res
+				.status(201)
+				.send({ status: "OK", data: updatedEmployee });
+		});
+};
+
+const removeVehicle = (req, res, next) => {
+	const emid = req.params.emid;
+	const updatingVehicleId = req.body.vehicleId;
+
+	if (!updatingVehicleId) {
+		return next(
+			new HttpError(`vehicle ID is required`, 422)
+		);
+	}
+	const updated = service__employee
+		.removeVehicle(emid, updatingVehicleId)
+		.then((updatedEmployee) => {
+			if (updatedEmployee === "emid available") {
+				return next(
+					new HttpError(
+						`could not find employee ID ${emid}`,
+						404
+					)
+				);
+			} else if (updatedEmployee === "veid unavailable") {
+				return next(
+					new HttpError(
+						`could not find vehicle ID ${updatingVehicleId} in the given employee's vehicle list`,
+						404
+					)
+				);
+			}
+			res
+				.status(201)
+				.send({ status: "OK", data: updatedEmployee });
+		});
+};
+
+const getVehicleList = (req, res, next) => {
+	const emid = req.params.emid;
+	const data = service__employee
+		.getVehicleList(emid)
+		.then((vehicleList) => {
+			if (vehicleList === "emid available") {
+				return next(
+					new HttpError(
+						`could not find employee ID ${emid}`,
+						404
+					)
+				);
+			}
+			res
+				.status(201)
+				.send({ status: "OK", data: vehicleList });
+		});
 };
 
 module.exports = {
@@ -151,6 +246,7 @@ module.exports = {
 	getEmployeeById,
 	addNewEmployee,
 	updateEmployee,
-	updateVehicleList,
+	addVehicle,
+	removeVehicle,
 	getVehicleList,
 };

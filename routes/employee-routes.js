@@ -27,11 +27,18 @@ router.post("/", [
 // change the password
 router.patch("/:emid", [check('password').not().isEmpty()], controllers__employee.updateEmployee)
 
-// PATCH api/employee/:emid/vehicles/:type
-// add or remove a vehicle from the employee's vehicle list
+// PATCH api/employee/:emid/vehicles/add
+// add a vehicle from the employee's vehicle list
 router.patch(
-	"/:emid/vehicles/:type",
-	controllers__employee.updateVehicleList
+	"/:emid/vehicles/add",
+	controllers__employee.addVehicle
+);
+
+// PATCH api/employee/:emid/vehicles/remove
+// remove a vehicle from the employee's vehicle list
+router.patch(
+	"/:emid/vehicles/remove",
+	controllers__employee.removeVehicle
 );
 
 // GET api/employee/:emid/vehicles
