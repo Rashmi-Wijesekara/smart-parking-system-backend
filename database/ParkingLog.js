@@ -4,7 +4,10 @@ const model__parkingLog = require("../mongodb/ParkingLog-model")
 const DateTime = require("../models/date-time");
 
 const getAllLogs = async () => {
-	return await model__parkingLog.find()
+	// most recent entry at the top
+	return await model__parkingLog.find().sort(
+		{date: -1, time: 1}
+	)
 };
 
 const getLogsWithinGivenTime = async (date, from, to) => {
