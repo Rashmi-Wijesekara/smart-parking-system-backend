@@ -52,12 +52,8 @@ const removeVehicle = async (emid, veid) => {
 	return updatedEmployee;
 };
 
-const getVehicleList = (emid) => {
-	const vehicleList = Employee.getVehicleList(
-		emid,
-		Employee.isEmployeeAvailable,
-		Employee.findIndex__employee
-	);
+const getVehicleList = async (emid) => {
+	const vehicleList = await Employee.getVehicleList(emid);
 	return vehicleList;
 };
 

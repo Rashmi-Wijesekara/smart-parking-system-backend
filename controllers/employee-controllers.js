@@ -97,10 +97,12 @@ const updateEmployee = (req, res, next) => {
 		.updateEmployee(employeeId, newPassword)
 		.then((updatedEmployee) => {
 			if (updatedEmployee === "emid invalid")
-				return next(new HttpError(
-					`could not find employee ID ${employeeId}`,
-					404
-				))
+				return next(
+					new HttpError(
+						`could not find employee ID ${employeeId}`,
+						404
+					)
+				);
 
 			res
 				.status(201)
@@ -123,7 +125,7 @@ const updateVehicleList = (req, res, next) => {
 		updatedEmployee = service__employee.addVehicle(
 			emid,
 			updatingVehicleId
-		)
+		);
 	} else if (type === "remove") {
 		updatedEmployee = service__employee.removeVehicle(
 			emid,
@@ -158,28 +160,34 @@ const addVehicle = (req, res, next) => {
 	const updatingVehicleId = req.body.vehicleId;
 
 	if (!updatingVehicleId) {
-		return next(new HttpError(`vehicle ID is required`, 422))
+		return next(
+			new HttpError(`vehicle ID is required`, 422)
+		);
 	}
 
 	const updated = service__employee
 		.addVehicle(emid, updatingVehicleId)
 		.then((updatedEmployee) => {
 			if (updatedEmployee === "emid available") {
-				return next(new HttpError(
-					`could not find employee ID ${emid}`,
-					404
-				))
+				return next(
+					new HttpError(
+						`could not find employee ID ${emid}`,
+						404
+					)
+				);
 			} else if (updatedEmployee === "veid available") {
-				return next(new HttpError(
-					`vehicle ID ${updatingVehicleId} already available`,
-					422
-				))
+				return next(
+					new HttpError(
+						`vehicle ID ${updatingVehicleId} already available`,
+						422
+					)
+				);
 			}
 			res
 				.status(201)
 				.send({ status: "OK", data: updatedEmployee });
 		});
-}
+};
 
 const removeVehicle = (req, res, next) => {
 	const emid = req.params.emid;
@@ -212,21 +220,25 @@ const removeVehicle = (req, res, next) => {
 				.status(201)
 				.send({ status: "OK", data: updatedEmployee });
 		});
-}
+};
 
-const getVehicleList = (req, res) => {
+const getVehicleList = (req, res, next) => {
 	const emid = req.params.emid;
-	const vehicleList =
-		service__employee.getVehicleList(emid);
-
-	if (vehicleList === "emid available") {
-		throw new HttpError(
-			`could not find employee ID ${emid}`,
-			404
-		);
-	}
-
-	res.status(201).send({ status: "OK", data: vehicleList });
+	const data = service__employee
+		.getVehicleList(emid)
+		.then((vehicleList) => {
+			if (vehicleList === "emid available") {
+				return next(
+					new HttpError(
+						`could not find employee ID ${emid}`,
+						404
+					)
+				);
+			}
+			res
+				.status(201)
+				.send({ status: "OK", data: vehicleList });
+		});
 };
 
 module.exports = {

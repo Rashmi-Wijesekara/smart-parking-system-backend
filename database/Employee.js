@@ -1,68 +1,6 @@
 const mongoose = require("mongoose");
 const model__employee = require("../mongodb/models/Employee-model");
 
-const database = require("./database.json");
-const { saveToDatabase } = require("./utils");
-
-// **********************************************************************************
-// check whether the given employee id is valid
-const isEmployeeAvailable = (employeeId) => {
-	// const result =
-	// 	database.employees.findIndex(
-	// 		(employee) => employee.id === employeeId
-	// 	) > -1;
-	// return result;
-
-	const result = model__employee.findOne({
-		id: employeeId,
-	});
-
-	if (result) return true;
-	else return false;
-};
-
-// get the index of the given employee id
-const findIndex__employee = (employeeId) => {
-	const index = database.employees.findIndex(
-		(employee) => employee.id === employeeId
-	);
-	return index;
-};
-
-const findIndex__vehicle = (veid, vehicleList) => {
-	const result1 = vehicleList.findIndex(
-		(vehicle) => vehicle === veid
-	);
-	return result1;
-};
-
-// true -> already available vehicle
-const isVehicleAvailable = (veid, findIndex__vehicle) => {
-	// let found = false
-	// const result =
-	// 	database.employees.findIndex((employee) => {
-	// 		let index = findIndex__vehicle(
-	// 			veid,
-	// 			employee.vehicleList
-	// 		);
-
-	// 		if (index > -1) {
-	// 			found = true
-	// 		}
-	// 	}) > -1;
-
-	let found = false;
-
-	const result = model__employee.findOne({
-		vehicleList: { $all: [veid] },
-	});
-	console.log(result);
-
-	return found;
-};
-
-// ***************************************************************************************
-
 // get full employee data
 const getAllEmployees = async () => {
 	return await model__employee.find();
@@ -160,7 +98,6 @@ const addVehicle = async (emid, veid) => {
 
 // remove given vehicle from employee's vehicle list
 const removeVehicle = async (emid, veid) => {
-
 	const isEmployee = await model__employee
 		.find({ id: emid })
 		.exec();
@@ -188,29 +125,23 @@ const removeVehicle = async (emid, veid) => {
 };
 
 // return the vehicle list of given employee
-const getVehicleList = (
-	emid,
-	isEmployeeAvailable,
-	findIndex__employee
-) => {
-	const isEmployeeAvailableResult =
-		isEmployeeAvailable(emid);
+const getVehicleList = async (emid) => {
+	const isEmployee = await model__employee
+		.find({ id: emid })
+		.exec();
 
 	// invalid employee id
-	if (isEmployeeAvailableResult === false) {
-		return "emid available";
-	}
+	if (isEmployee.length == 0) return "emid available";
 
-	const employeeIndex = findIndex__employee(emid);
-
-	return database.employees[employeeIndex].vehicleList;
+	const vehicleList = await model__employee.find(
+		{id: emid},
+		{vehicleList: 1}
+		).exec()
+	
+	return vehicleList
 };
 
 module.exports = {
-	isEmployeeAvailable,
-	findIndex__employee,
-	isVehicleAvailable,
-	findIndex__vehicle,
 	getAllEmployees,
 	getEmployeeById,
 	addNewEmployee,
