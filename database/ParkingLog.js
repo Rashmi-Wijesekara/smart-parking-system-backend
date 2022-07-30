@@ -1,30 +1,34 @@
-const mongoose = require("mongoose")
-const model__parkingLog = require("../mongodb/ParkingLog-model")
+const mongoose = require("mongoose");
+const model__parkingLog = require("../mongodb/ParkingLog-model");
 
 const DateTime = require("../models/date-time");
 
 const getAllLogs = async () => {
 	// most recent entry at the top
-	return await model__parkingLog.find().sort(
-		{date: -1, time: 1}
-	)
+	return await model__parkingLog
+		.find()
+		.sort({ date: -1, time: 1 });
 };
 
 const getLogsWithinGivenTime = async (date, from, to) => {
-	const selected = database.parkingLog.filter((entry) => {
-		if (entry.date === date) {
-			return (
-				DateTime.isPast(from, entry.time) === false &&
-				DateTime.isPast(to, entry.time) === true
-			);
-		}
-	});
+	let fullResult = []
 
-	if (!selected || selected.length === 0) {
-		return "no matching entries";
-	}
-	// console.log(selected);
-	return selected;
+	const result = await model__parkingLog
+		.where(
+			{ date: date }
+			// { time: { $gte: from, $lte: to } }
+		)
+		// .where({ time: { $gte: from, $lte: to } })
+		.sort({time: 1 });
+
+	result.forEach((log)=> {
+		if (
+			DateTime.isPast(from, log.time) === false &&
+			DateTime.isPast(to, log.time) === true
+		)
+			fullResult.push(log);
+	})
+	return fullResult;
 };
 
 const addLog = async (body) => {
@@ -34,11 +38,11 @@ const addLog = async (body) => {
 		vehicleId: body.vehicleId,
 		status: body.status,
 		date: body.date,
-		time: body.time
+		time: body.time,
 	});
 
 	await newLog.save();
-	return newLog
+	return newLog;
 };
 
 module.exports = {
@@ -46,21 +50,3 @@ module.exports = {
 	getLogsWithinGivenTime,
 	addLog,
 };
-
-/*
-var input = "10:23 PM",
-	matches = input
-		.toLowerCase()
-		.match(/(\d{1,2}):(\d{2}) ([ap]m)/),
-	output =
-		parseInt(matches[1]) +
-		(matches[3] == "pm" ? 12 : 0) +
-		":" +
-		matches[2] +
-		":00";
-
-console.log(output);
-// 22:23:00
-
-console.log(new Date(parseInt(input)).toLocaleTimeString(navigator.language, {hour12: true, minute: '2-digit'}));
-*/
