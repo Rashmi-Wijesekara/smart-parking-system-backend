@@ -1,34 +1,26 @@
 const ShiftLog = require("../database/ShiftLog");
-const SecurityOfficer = require("../database/SecurityOfficer");
 
-const getAllLogsById = (soid) => {
-	const allLogs = ShiftLog.getAllLogsById(soid);
+const getAllLogsById = async (soid) => {
+	const allLogs = await ShiftLog.getAllLogsById(soid);
 	return allLogs;
 };
 
-const addLog = (log) => {
-	const addedLog = ShiftLog.addLog(
-		log,
-		SecurityOfficer.isOfficerAvailable
-	);
+const addLog = async (log) => {
+	const addedLog = await ShiftLog.addLog(log);
 	return addedLog;
 };
 
-const updateLog = (soid, endTime) => {
-	const updatedLog = ShiftLog.updateLog(
+const updateLog = async (soid, endTime) => {
+	const updatedLog = await ShiftLog.updateLog(
 		soid,
-		endTime,
-		SecurityOfficer.isOfficerAvailable
+		endTime
 	);
-	return updatedLog
+	return updatedLog;
 };
 
-const getTodaysLog = (soid) => {
-	const todaysLog = ShiftLog.getTodaysLog(
-		soid,
-		SecurityOfficer.isOfficerAvailable
-	);
-	return todaysLog
+const getTodaysLog = async (soid) => {
+	const todaysLog = await ShiftLog.getTodaysLog(soid);
+	return todaysLog;
 };
 
 module.exports = {
