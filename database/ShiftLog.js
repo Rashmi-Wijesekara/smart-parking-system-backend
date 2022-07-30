@@ -70,7 +70,21 @@ const updateLog = async (soid, endTime) => {
 };
 
 const getTodaysLog = async (soid) => {
-	const isOfficerAvailableResult = isOfficerAvailable(soid);
+
+	const isOfficer = await model__officer
+		.find({ id: soid })
+		.exec();
+	// invalid officer id
+	if (isOfficer.length == 0) return;
+
+	const today = DateTime.getDate()
+
+	const todayLog = await model__shiftLog.find({
+		officerId: soid,
+		date: today
+	})
+	return todayLog
+	/*const isOfficerAvailableResult = isOfficerAvailable(soid);
 	if (!isOfficerAvailableResult) return "no officer";
 
 	const todaysLog = database.shiftLog.find((log) => {
@@ -80,7 +94,7 @@ const getTodaysLog = async (soid) => {
 		);
 	});
 
-	return todaysLog;
+	return todaysLog;*/
 };
 
 module.exports = {
