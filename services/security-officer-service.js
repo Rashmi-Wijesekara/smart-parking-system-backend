@@ -1,34 +1,33 @@
 const SecurityOfficer = require('../database/SecurityOfficer')
 const { v4: uuid } = require("uuid");
 
-const getOfficerById = (soid) => {
-	return SecurityOfficer.getOfficerById(soid)
-}
+const getOfficerById = async (soid) => {
+	return await SecurityOfficer.getOfficerById(soid);
+};
 
-const addOfficer = (newOfficer) => {
+const addOfficer = async (newOfficer) => {
 	// const officerToInsert = {
 	// 	...newOfficer,
 	// 	id: uuid(), //generate unique id
 	// };
 
-	const addedOfficer = SecurityOfficer.addOfficer(
+	const addedOfficer = await SecurityOfficer.addOfficer(
 		newOfficer
-	)
+	);
 
-	return addedOfficer
-}
+	return addedOfficer;
+};
 
 // change password
-const updateOfficer = (soid, newPassword) => {
-	const updatedOfficer = SecurityOfficer.updateOfficer(
-		soid,
-		newPassword,
-		SecurityOfficer.isOfficerAvailable,
-		SecurityOfficer.findIndex__officer
-	)
+const updateOfficer = async (soid, newPassword) => {
+	const updatedOfficer =
+		await SecurityOfficer.updateOfficer(
+			soid,
+			newPassword
+		);
 
-	return updatedOfficer
-}
+	return updatedOfficer;
+};
 
 module.exports = {
 	getOfficerById,

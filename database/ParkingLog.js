@@ -14,11 +14,7 @@ const getLogsWithinGivenTime = async (date, from, to) => {
 	let fullResult = []
 
 	const result = await model__parkingLog
-		.where(
-			{ date: date }
-			// { time: { $gte: from, $lte: to } }
-		)
-		// .where({ time: { $gte: from, $lte: to } })
+		.where({ date: date })
 		.sort({time: 1 });
 
 	result.forEach((log)=> {
