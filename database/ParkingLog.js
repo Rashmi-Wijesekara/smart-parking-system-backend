@@ -1,12 +1,13 @@
-const database = require("./database.json");
-const { saveToDatabase } = require("./utils");
+const mongoose = require("mongoose")
+const model__parkingLog = require("../mongodb/ParkingLog-model")
+
 const DateTime = require("../models/date-time");
 
-const getAllLogs = () => {
-	return database.parkingLog;
+const getAllLogs = async () => {
+	return await model__parkingLog.find()
 };
 
-const getLogsWithinGivenTime = (date, from, to) => {
+const getLogsWithinGivenTime = async (date, from, to) => {
 	const selected = database.parkingLog.filter((entry) => {
 		if (entry.date === date) {
 			return (
@@ -23,10 +24,18 @@ const getLogsWithinGivenTime = (date, from, to) => {
 	return selected;
 };
 
-const addLog = (log) => {
-	database.parkingLog.push(log);
-	saveToDatabase(database);
-	return log;
+const addLog = async (body) => {
+	const newLog = new model__parkingLog({
+		employeeId: body.employeeId,
+		name: body.name,
+		vehicleId: body.vehicleId,
+		status: body.status,
+		date: body.date,
+		time: body.time
+	});
+
+	await newLog.save();
+	return newLog
 };
 
 module.exports = {

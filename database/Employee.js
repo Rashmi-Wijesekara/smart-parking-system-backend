@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const model__employee = require("../mongodb/models/Employee-model");
+const model__employee = require("../mongodb/Employee-model");
 
 // get full employee data
 const getAllEmployees = async () => {
@@ -7,8 +7,8 @@ const getAllEmployees = async () => {
 };
 
 // get employee's data
-const getEmployeeById = (employeeId) => {
-	return model__employee.find({ id: employeeId });
+const getEmployeeById = async (employeeId) => {
+	return await model__employee.find({ id: employeeId });
 };
 
 // add new employee
