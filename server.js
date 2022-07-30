@@ -14,6 +14,16 @@ const server = express();
 // able to parse the sent JSON inside the request body
 server.use(bodyParser.json());
 
+// handle CORS errors
+server.use((req, res, next) => {
+	res.setHeader("Access-Control-Allow-Origin", "*");
+	res.setHeader(
+		"Access-Control-Allow-Headers",
+		"Origin, X-Requested-With, Content-Type, Accept, Authorization"
+	);
+	res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE")
+});
+
 // connect routers
 server.use("/api/employee", router__employee);
 server.use("/api/parking-log", router__parkingLog);
@@ -61,4 +71,3 @@ mongoose
 	.catch((err) => {
 		console.log(err);
 	});
-
