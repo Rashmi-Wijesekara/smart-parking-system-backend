@@ -1,5 +1,5 @@
 const Employee = require("../database/Employee");
-const { v4: uuid } = require("uuid");
+const ID = require("nodejs-unique-numeric-id-generator");
 
 const getAllEmployees = async () => {
 	const allEmployees = await Employee.getAllEmployees();
@@ -16,7 +16,7 @@ const getEmployeeById = async (employeeId) => {
 const addNewEmployee = async (newEmployee) => {
 	const employeeToInsert = {
 		...newEmployee,
-		id: uuid(), //generate unique id
+		id: ID.generate(new Date().toJSON()), //generate unique id
 	};
 
 	const addedEmployee = await Employee.addNewEmployee(

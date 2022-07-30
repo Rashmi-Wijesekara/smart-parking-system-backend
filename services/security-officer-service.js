@@ -1,18 +1,18 @@
 const SecurityOfficer = require('../database/SecurityOfficer')
-const { v4: uuid } = require("uuid");
+const ID = require("nodejs-unique-numeric-id-generator");
 
 const getOfficerById = async (soid) => {
 	return await SecurityOfficer.getOfficerById(soid);
 };
 
 const addOfficer = async (newOfficer) => {
-	// const officerToInsert = {
-	// 	...newOfficer,
-	// 	id: uuid(), //generate unique id
-	// };
+	const officerToInsert = {
+		...newOfficer,
+		id: ID.generate(new Date().toJSON()) //generate unique id
+	};
 
 	const addedOfficer = await SecurityOfficer.addOfficer(
-		newOfficer
+		officerToInsert
 	);
 
 	return addedOfficer;
