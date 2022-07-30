@@ -84,17 +84,6 @@ const getTodaysLog = async (soid) => {
 		date: today
 	})
 	return todayLog
-	/*const isOfficerAvailableResult = isOfficerAvailable(soid);
-	if (!isOfficerAvailableResult) return "no officer";
-
-	const todaysLog = database.shiftLog.find((log) => {
-		return (
-			log.officerId === soid &&
-			log.date === DateTime.getDate()
-		);
-	});
-
-	return todaysLog;*/
 };
 
 module.exports = {
