@@ -6,7 +6,15 @@ const DateTime = require("../models/date-time");
 const getAllLogs = async () => {
 	// most recent entry at the top
 	return await model__parkingLog
-		.find()
+		.find({}, {
+			id: 1,
+			employeeId: 1,
+			name: 1,
+			vehicleId: 1,
+			status: 1,
+			date: 1,
+			time: 1
+		})
 		.sort({ date: -1, time: 1 });
 };
 
@@ -41,8 +49,17 @@ const addLog = async (body) => {
 	return newLog;
 };
 
+const getAllLogsById = async (emid) => {
+	return await model__parkingLog
+		.find({
+			employeeId: emid,
+		})
+		.sort({ date: -1, time: 1 });
+}
+
 module.exports = {
 	getAllLogs,
 	getLogsWithinGivenTime,
 	addLog,
+	getAllLogsById,
 };

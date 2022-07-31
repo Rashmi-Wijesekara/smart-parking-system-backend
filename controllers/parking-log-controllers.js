@@ -63,8 +63,22 @@ const addLog = (req, res) => {
 		});
 };
 
+const getAllLogsById = (req, res, next) => {
+	const emid = req.params.emid;
+
+	const data = service__parkingLog
+		.getAllLogsById(emid)
+		.then((logs) => {
+			res.send({
+				status: "OK",
+				data: logs,
+			});
+		});
+}
+
 module.exports = {
 	getAllLogs,
 	getLogsWithinGivenTime,
 	addLog,
+	getAllLogsById,
 };

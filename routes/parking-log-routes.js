@@ -23,4 +23,8 @@ router.post("/", [
 	check('time').not().isEmpty(),
 ], controllers__parkingLog.addLog)
 
+// GET api/parking-log/:id
+// get all the parking log entries of the given security officer
+router.get("/:emid", controllers__parkingLog.getAllLogsById)
+
 module.exports = router;

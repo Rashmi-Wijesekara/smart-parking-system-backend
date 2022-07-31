@@ -51,9 +51,9 @@ const updateLog = async (soid, endTime) => {
 		endTime: "---",
 	});
 	
-	const checkDate = check[0].date;
-
 	if (check.length == 0) return "no log found";
+	
+	const checkDate = check[0].date;
 
 	await model__shiftLog.updateOne(
 		{ officerId: soid, endTime: "---" },
