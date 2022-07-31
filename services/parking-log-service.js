@@ -24,9 +24,14 @@ const getAllLogsById = async (emid) => {
 	return logs
 }
 
+const getLogStatus = async (emid) => {
+	const status = await ParkingLog.getLogStatus(emid)
+	return status
+}
 module.exports = {
 	getAllLogs,
 	getLogsWithinGivenTime,
 	addLog,
 	getAllLogsById,
+	getLogStatus,
 };
