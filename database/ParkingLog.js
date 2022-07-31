@@ -9,7 +9,6 @@ const getAllLogs = async () => {
 		.find(
 			{},
 			{
-				id: 1,
 				employeeId: 1,
 				name: 1,
 				vehicleId: 1,
@@ -18,7 +17,7 @@ const getAllLogs = async () => {
 				time: 1,
 			}
 		)
-		.sort({ date: -1, time: 1 });
+		.sort({ date: -1, time: -1 });
 };
 
 const getLogsWithinGivenTime = async (date, from, to) => {
@@ -61,17 +60,26 @@ const getAllLogsById = async (emid) => {
 };
 
 const getLogStatus = async (emid) => {
-	const today = DateTime.getDate()
+	const today = DateTime.getDate();
 
 	const log = await model__parkingLog.find({
 		employeeId: emid,
 		date: today,
 	});
 
-	if(log.length == 0)
+	// today's 1st parking log of this employee
+	// should be "IN"
+	if (log.length == 0) return "IN";
+
+	// check the last parking type and return the opposite
+	const status = await model__parkingLog
+		.findOne({ employeeId: emid, date: today }, { status: 1 })
+		.sort({ date: -1, time: -1 });
+
+	if(status.status === "OUT")
 		return "IN"
-	
-	return "OUT"
+
+	else return "OUT"
 };
 
 module.exports = {
