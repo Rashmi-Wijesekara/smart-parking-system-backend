@@ -6,7 +6,7 @@ const DateTime = require("../models/date-time");
 
 const getAllLogsById = async (soid) => {
 	return await model__shiftLog
-		.find({ id: soid })
+		.find({ officerId: soid })
 		.sort({ date: -1 });
 };
 
