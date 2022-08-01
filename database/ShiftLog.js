@@ -6,7 +6,7 @@ const DateTime = require("../models/date-time");
 
 const getAllLogsById = async (soid) => {
 	return await model__shiftLog
-		.find({ id: soid })
+		.find({ officerId: soid })
 		.sort({ date: -1 });
 };
 
@@ -51,9 +51,9 @@ const updateLog = async (soid, endTime) => {
 		endTime: "---",
 	});
 	
-	const checkDate = check[0].date;
-
 	if (check.length == 0) return "no log found";
+	
+	const checkDate = check[0].date;
 
 	await model__shiftLog.updateOne(
 		{ officerId: soid, endTime: "---" },

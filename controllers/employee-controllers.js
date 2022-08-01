@@ -241,6 +241,17 @@ const getVehicleList = (req, res, next) => {
 		});
 };
 
+const getEmployeeByVehicleId = (req, res, next) => {
+	const veid = req.params.veid;
+	const data = service__employee
+		.getEmployeeByVehicleId(veid)
+		.then((employee) => {
+			res
+				.status(201)
+				.send({ status: "OK", data: employee });
+		});
+};
+
 module.exports = {
 	getAllEmployees,
 	getEmployeeById,
@@ -249,4 +260,5 @@ module.exports = {
 	addVehicle,
 	removeVehicle,
 	getVehicleList,
+	getEmployeeByVehicleId,
 };

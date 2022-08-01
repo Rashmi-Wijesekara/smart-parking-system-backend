@@ -35,8 +35,7 @@ const addOfficer = (req, res) => {
 		name: body.name,
 		phoneNo: body.phoneNo,
 		email: body.email,
-		password: body.password,
-		id: body.id,
+		password: body.password
 	};
 
 	const data = service__securityOfficer

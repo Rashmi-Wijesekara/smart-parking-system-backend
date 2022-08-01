@@ -64,7 +64,7 @@ server.use((error, req, res, next) => {
 // if the database connection is successfull we can start the server
 mongoose
 	.connect(
-		"mongodb+srv://megamedia:smartparkingsystem@cluster0.wbfkpvo.mongodb.net/smart-parking-system?retryWrites=true&w=majority"
+		"mongodb+srv://megamedia:smartparkingsystem@cluster0.wbfkpvo.mongodb.net/testing?retryWrites=true&w=majority"
 	)
 	.then(() => {
 		server.listen(5000);
