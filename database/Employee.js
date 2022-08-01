@@ -3,7 +3,10 @@ const model__employee = require("../mongodb/Employee-model");
 
 // get full employee data
 const getAllEmployees = async () => {
-	return await model__employee.find();
+	return await model__employee.find(
+		{},
+		{ id: 1, name: 1, vehicleList: 1, phoneNo: 1 }
+	);
 };
 
 // get employee's data
@@ -113,15 +116,15 @@ const removeVehicle = async (emid, veid) => {
 	if (status.length === 0) return "veid unavailable";
 
 	await model__employee.updateOne(
-		{id: emid},
-		{$pull: {vehicleList: veid}}
-	)
+		{ id: emid },
+		{ $pull: { vehicleList: veid } }
+	);
 
 	const updatedEmployee = await model__employee
 		.find({ id: emid })
 		.exec();
 
-	return updatedEmployee
+	return updatedEmployee;
 };
 
 // return the vehicle list of given employee
@@ -133,13 +136,21 @@ const getVehicleList = async (emid) => {
 	// invalid employee id
 	if (isEmployee.length == 0) return "emid available";
 
-	const vehicleList = await model__employee.find(
-		{id: emid},
-		{vehicleList: 1}
-		).exec()
-	
-	return vehicleList
+	const vehicleList = await model__employee
+		.find({ id: emid }, { vehicleList: 1 })
+		.exec();
+
+	return vehicleList;
 };
+
+const getEmployeeByVehicleId = async (veid) => {
+	const employee = await model__employee.find(
+		{ vehicleList: { $in: [veid] } },
+		{ id: 1, name: 1, vehicleList: 1, phoneNo: 1 }
+	);
+
+	return employee
+}
 
 module.exports = {
 	getAllEmployees,
@@ -149,4 +160,5 @@ module.exports = {
 	addVehicle,
 	removeVehicle,
 	getVehicleList,
+	getEmployeeByVehicleId,
 };

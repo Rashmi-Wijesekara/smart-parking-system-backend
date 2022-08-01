@@ -48,4 +48,9 @@ router.get(
 	controllers__employee.getVehicleList
 );
 
+router.get(
+	"/vehicles/:veid",
+	controllers__employee.getEmployeeByVehicleId
+)
+
 module.exports = router

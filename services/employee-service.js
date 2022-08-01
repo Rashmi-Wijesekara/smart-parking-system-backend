@@ -57,6 +57,11 @@ const getVehicleList = async (emid) => {
 	return vehicleList;
 };
 
+const getEmployeeByVehicleId = async (vehicleId) => {
+	const employee = await Employee.getEmployeeByVehicleId(vehicleId)
+	return employee
+}
+
 module.exports = {
 	getAllEmployees,
 	getEmployeeById,
@@ -65,4 +70,5 @@ module.exports = {
 	addVehicle,
 	removeVehicle,
 	getVehicleList,
+	getEmployeeByVehicleId,
 };
