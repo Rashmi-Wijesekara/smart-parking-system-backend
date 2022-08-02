@@ -11,6 +11,12 @@ const router__shiftLog = require("./routes/shift-log-routes");
 
 const server = express();
 
+let port = process.env.PORT;
+
+if (port == null || port == "") {
+	port = 5000;
+  }
+
 // able to parse the sent JSON inside the request body
 server.use(bodyParser.json());
 
@@ -67,7 +73,7 @@ mongoose
 		"mongodb+srv://megamedia:smartparkingsystem@cluster0.wbfkpvo.mongodb.net/testing?retryWrites=true&w=majority"
 	)
 	.then(() => {
-		server.listen(5000);
+		server.listen(port);
 	})
 	.catch((err) => {
 		console.log(err);
